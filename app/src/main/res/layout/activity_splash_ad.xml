@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sigmob.android.demo.SplashAdActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/cb_fullscreen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全屏显示"
+            android:textSize="16dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_load_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="ButtonClick"
+            android:text="拉取并显示开屏广告" />
+
+        <Button
+            android:id="@+id/bt_load_only"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="ButtonClick"
+            android:text="拉取与显示分离" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:gravity="center"
+        android:text="广告回调信息:"
+        android:textSize="16dp" />
+
+    <ListView
+        android:id="@+id/callback_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:divider="@color/colorGray"
+        android:dividerHeight="1px" />
+
+
+</LinearLayout>

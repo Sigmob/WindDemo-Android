@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context="com.sigmob.android.demo.RewardVideoActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/bt_load_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="ButtonClick"
+            android:text="Load广告" />
+
+        <Button
+            android:id="@+id/bt_show_ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="ButtonClick"
+            android:text="观看广告" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:gravity="center"
+        android:text="广告回调信息:"
+        android:textSize="16dp" />
+
+    <ListView
+        android:id="@+id/callback_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:divider="@color/colorGray"
+        android:dividerHeight="1px" />
+</LinearLayout>
