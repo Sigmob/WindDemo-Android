@@ -217,9 +217,6 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         }
 
         private void bindData(final AdViewHolder adViewHolder, final WindNativeAdData adData) {
-            //将容器和view链接起来
-            //媒体自渲染的View
-            NativeAdDemoRender adRender = new NativeAdDemoRender();
 
             View nativeAdView = adViewHolder.adRender.getNativeAdView(mActivity, adData, new NativeADEventListener() {
                 @Override
