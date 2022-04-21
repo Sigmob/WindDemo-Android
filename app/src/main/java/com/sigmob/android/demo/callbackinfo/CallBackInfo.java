@@ -1,4 +1,4 @@
-package com.sigmob.android.demo.callbackInfo;
+package com.sigmob.android.demo.callbackinfo;
 
 /**
  * created by lance on   2021/12/9 : 9:22 上午

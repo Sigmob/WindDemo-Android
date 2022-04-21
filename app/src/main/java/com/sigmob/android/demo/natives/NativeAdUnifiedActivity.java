@@ -13,10 +13,10 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.sigmob.android.demo.R;
-import com.sigmob.android.demo.callbackInfo.CallBackInfo;
-import com.sigmob.android.demo.callbackInfo.CallBackItem;
-import com.sigmob.android.demo.callbackInfo.ExpandAdapter;
-import com.sigmob.android.demo.callbackInfo.MyListView;
+import com.sigmob.android.demo.callbackinfo.CallBackInfo;
+import com.sigmob.android.demo.callbackinfo.CallBackItem;
+import com.sigmob.android.demo.callbackinfo.ExpandAdapter;
+import com.sigmob.android.demo.callbackinfo.MyListView;
 import com.sigmob.windad.WindAdError;
 import com.sigmob.windad.natives.NativeADEventListener;
 import com.sigmob.windad.natives.WindNativeAdData;

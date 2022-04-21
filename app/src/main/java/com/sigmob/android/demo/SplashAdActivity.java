@@ -13,9 +13,9 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
-import com.sigmob.android.demo.callbackInfo.CallBackInfo;
-import com.sigmob.android.demo.callbackInfo.CallBackItem;
-import com.sigmob.android.demo.callbackInfo.ExpandAdapter;
+import com.sigmob.android.demo.callbackinfo.CallBackInfo;
+import com.sigmob.android.demo.callbackinfo.CallBackItem;
+import com.sigmob.android.demo.callbackinfo.ExpandAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.sigmob.android.demo.callbackInfo;
+package com.sigmob.android.demo.callbackinfo;
 
 import android.content.Context;
 import android.util.AttributeSet;
