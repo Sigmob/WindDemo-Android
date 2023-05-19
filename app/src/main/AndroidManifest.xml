@@ -24,9 +24,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".VersionActivity"
-            android:exported="true" />
-        <activity
             android:name=".DeviceActivity"
             android:exported="true" />
         
@@ -54,6 +51,10 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".NewInterstitialActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".RewardVideoActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="sensor" />
@@ -67,7 +68,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/sigmob_provider_paths" />
-        </provider> <!-- TT 国内 -->
+        </provider>
 
         <activity
             android:name=".SplashActivity"

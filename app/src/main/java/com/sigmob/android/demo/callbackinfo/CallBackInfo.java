@@ -23,7 +23,13 @@ public class CallBackInfo {
             "onInterstitialAdPlayEnd",
             "onInterstitialAdClicked",
             "onInterstitialAdClosed",};
-
+    public static String[] NEW_INTERSTITIAL_CALLBACK = {
+            "onInterstitialAdLoadSuccess",
+            "onInterstitialAdLoadError",
+            "onInterstitialAdShow",
+            "onInterstitialAdShowError",
+            "onInterstitialAdClicked",
+            "onInterstitialAdClosed",};
     public static String[] SPLASH_CALLBACK = {
             "onSplashAdLoadSuccess",
             "onSplashAdFailToLoad",

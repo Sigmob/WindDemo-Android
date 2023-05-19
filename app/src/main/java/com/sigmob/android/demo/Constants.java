@@ -23,6 +23,7 @@ public class Constants {
     public static String splash_placement_id = null;
     public static String fullScreen_placement_id = null;
     public static String native_unified_placement_id = null;
+    public static String newInterstitial_placement_id = null;
 
     public static void loadDefualtAdSetting(Context context) {
         try {
@@ -33,6 +34,7 @@ public class Constants {
             splash_placement_id = appInfo.metaData.getString("sigmob.splash_placement_id");
             fullScreen_placement_id = appInfo.metaData.getString("sigmob.fullScreen_placement_id");
             native_unified_placement_id = appInfo.metaData.getString("sigmob.native_unified_placement_id");
+            newInterstitial_placement_id = appInfo.metaData.getString("sigmob.newInterstitial_placement_id");
         } catch (Exception e) {
             e.printStackTrace();
         }
