@@ -61,7 +61,7 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_interstitial);
 
-        placementId = Constants.fullScreen_placement_id;
+        placementId = Constants.newInterstitial_placement_id;
 
 
         WebView.setWebContentsDebuggingEnabled(true);
