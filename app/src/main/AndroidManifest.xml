@@ -111,6 +111,9 @@
         <meta-data
             android:name="sigmob.native_unified_placement_id"
             android:value="ed70b4760ff" />
+        <meta-data
+            android:name="sigmob.newInterstitial_placement_id"
+            android:value="f51c93b6bf6" />
     </application>
 
 </manifest>
