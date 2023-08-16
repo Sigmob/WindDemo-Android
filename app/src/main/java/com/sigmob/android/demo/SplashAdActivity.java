@@ -40,14 +40,6 @@ public class SplashAdActivity extends Activity {
     private String userId = "123456789";
     private WindSplashAD splashAd;
 
-    private void getExtraInfo() {
-        Intent intent = getIntent();
-        isFullScreen = intent.getBooleanExtra("isFullScreen", false);
-        placementId = intent.getStringExtra("placementId");
-        if(TextUtils.isEmpty(placementId)){
-            placementId = "ea1f8f21300";
-        }
-    }
 
     private void initCallBack() {
         resetCallBackData();
@@ -69,8 +61,6 @@ public class SplashAdActivity extends Activity {
                 }
             }
         });
-        getExtraInfo();
-
 
 
     }
