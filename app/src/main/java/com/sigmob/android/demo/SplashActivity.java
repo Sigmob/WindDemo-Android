@@ -3,6 +3,7 @@ package com.sigmob.android.demo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
 
@@ -29,7 +30,7 @@ public class SplashActivity extends Activity implements WindSplashADListener {
     private boolean isFullScreen = false;
     private boolean needStartMainActivity = true;
 
-    private String placementId;
+    private String placementId ;
     private String userId = "123456789";
 
     private HashMap<String, String> callBack;
@@ -39,6 +40,9 @@ public class SplashActivity extends Activity implements WindSplashADListener {
         isLoadAndShow = intent.getBooleanExtra("isLoadAndShow", true);
         isFullScreen = intent.getBooleanExtra("isFullScreen", false);
         placementId = intent.getStringExtra("placementId");
+        if(TextUtils.isEmpty(placementId)){
+            placementId = "ea1f8f21300";
+        }
         needStartMainActivity = intent.getBooleanExtra("need_start_main_activity", true);
 
     }
@@ -119,6 +123,11 @@ public class SplashActivity extends Activity implements WindSplashADListener {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        splashAd.destroy();
+    }
 
     @Override
     public void onSplashAdShow(String s) {
@@ -139,7 +148,6 @@ public class SplashActivity extends Activity implements WindSplashADListener {
     public void onSplashAdLoadFail(WindAdError error, String placementId) {
         callBack.put("onSplashAdLoadFail", error.toString());
         Log.d("windSDK", "------onSplashAdLoadFail------" + error.toString() + ":" + placementId);
-        jumpMainActivity();
     }
 
     @Override

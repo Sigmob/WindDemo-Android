@@ -122,12 +122,15 @@ public class SplashAdActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        HashMap<String, String> result = (HashMap<String, String>) data.getExtras().getSerializable("result");
-        Log.d("windSDK", "------onActivityResult------" + resultCode + ":" + resultCode + ":" + result.size());
-        for (Map.Entry<String, String> entry : result.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            logCallBack(key, value);
+        if (data != null){
+            HashMap<String, String> result = (HashMap<String, String>) data.getExtras().getSerializable("result");
+            Log.d("windSDK", "------onActivityResult------" + resultCode + ":" + resultCode + ":" + result.size());
+            for (Map.Entry<String, String> entry : result.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                logCallBack(key, value);
+            }
         }
+
     }
 }
