@@ -148,6 +148,8 @@ public class SplashActivity extends Activity implements WindSplashADListener {
     public void onSplashAdLoadFail(WindAdError error, String placementId) {
         callBack.put("onSplashAdLoadFail", error.toString());
         Log.d("windSDK", "------onSplashAdLoadFail------" + error.toString() + ":" + placementId);
+        jumpMainActivity();
+
     }
 
     @Override
