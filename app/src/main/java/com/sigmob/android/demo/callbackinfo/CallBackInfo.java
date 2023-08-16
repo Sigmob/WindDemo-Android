@@ -37,7 +37,7 @@ public class CallBackInfo {
             "onSplashAdShowError",
             "onSplashAdSkip",
             "onSplashAdClick",
-            "onSplashClose"};
+            "onSplashAdClose"};
 
     public static String[] NATIVE_CALLBACK = {
             "onAdLoad",

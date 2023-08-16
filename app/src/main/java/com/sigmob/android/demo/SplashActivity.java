@@ -60,14 +60,6 @@ public class SplashActivity extends Activity implements WindSplashADListener {
         options.put("user_id", userId);
         WindSplashAdRequest splashAdRequest = new WindSplashAdRequest(placementId, userId, options);
 
-        /**
-         *  广告结束，广告内容是否自动隐藏。
-         *  若开屏和应用共用Activity，建议false。
-         *  开屏是单独Activity ，建议true。
-         */
-        splashAdRequest.setDisableAutoHideAd(true);
-
-
         splashAd = new WindSplashAD( splashAdRequest, this);
 
         if (isFullScreen){

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -16,6 +17,10 @@ import android.widget.Spinner;
 import com.sigmob.android.demo.callbackinfo.CallBackInfo;
 import com.sigmob.android.demo.callbackinfo.CallBackItem;
 import com.sigmob.android.demo.callbackinfo.ExpandAdapter;
+import com.sigmob.windad.Splash.WindSplashAD;
+import com.sigmob.windad.Splash.WindSplashADListener;
+import com.sigmob.windad.Splash.WindSplashAdRequest;
+import com.sigmob.windad.WindAdError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +37,17 @@ public class SplashAdActivity extends Activity {
     private ListView listView;
     private ExpandAdapter adapter;
     private List<CallBackItem> callBackDataList = new ArrayList<>();
+    private String userId = "123456789";
+    private WindSplashAD splashAd;
+
+    private void getExtraInfo() {
+        Intent intent = getIntent();
+        isFullScreen = intent.getBooleanExtra("isFullScreen", false);
+        placementId = intent.getStringExtra("placementId");
+        if(TextUtils.isEmpty(placementId)){
+            placementId = "ea1f8f21300";
+        }
+    }
 
     private void initCallBack() {
         resetCallBackData();
@@ -53,6 +69,69 @@ public class SplashAdActivity extends Activity {
                 }
             }
         });
+        getExtraInfo();
+
+
+
+    }
+
+    private void loadAd(){
+
+        Map<String, Object> options = new HashMap<>();
+        options.put("user_id", userId);
+
+        WindSplashAdRequest splashAdRequest = new WindSplashAdRequest(placementId, userId, options);
+
+        splashAd = new WindSplashAD(splashAdRequest, new WindSplashADListener() {
+            @Override
+            public void onSplashAdShow(String placementId) {
+                logCallBack("onSplashAdShow", "");
+
+            }
+
+            @Override
+            public void onSplashAdLoadSuccess(String placementId) {
+                logCallBack("onSplashAdLoadSuccess", "");
+
+            }
+
+            @Override
+            public void onSplashAdLoadFail(WindAdError error, String placementId) {
+                logCallBack("onSplashAdLoadFail", error.toString());
+
+            }
+
+            @Override
+            public void onSplashAdShowError(WindAdError error, String placementId) {
+                logCallBack("onSplashAdShowError", error.toString());
+
+            }
+
+            @Override
+            public void onSplashAdClick(String placementId) {
+                logCallBack("onSplashAdClick", "");
+
+            }
+
+            @Override
+            public void onSplashAdClose(String placementId) {
+                logCallBack("onSplashAdClose", "");
+                splashAd.destroy();
+            }
+
+            @Override
+            public void onSplashAdSkip(String s) {
+                logCallBack("onSplashAdSkip", "");
+
+            }
+        });
+
+        splashAd.loadAd();
+
+    }
+
+    private void showAd(){
+        splashAd.show((ViewGroup)getWindow().getDecorView());
     }
 
     @Override
@@ -73,7 +152,6 @@ public class SplashAdActivity extends Activity {
     }
 
     public void ButtonClick(View view) {
-        resetCallBackData();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -86,15 +164,21 @@ public class SplashAdActivity extends Activity {
         intent.putExtra("need_start_main_activity", false);
         switch (view.getId()) {
             case R.id.bt_load_show:
+                resetCallBackData();
                 intent.putExtra("isLoadAndShow", true);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_load_only:
-                intent.putExtra("isLoadAndShow", false);
-                startActivityForResult(intent, 1);
+                resetCallBackData();
+                loadAd();
+                break;
+            case R.id.bt_show_only:
+                showAd();
                 break;
         }
     }
+
+
 
     private void resetCallBackData() {
         callBackDataList.clear();
