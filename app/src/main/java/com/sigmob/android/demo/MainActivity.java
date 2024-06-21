@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         setTitle("Sigmob SDK Version : "+ WindAds.getVersion());
         bindButton(R.id.bt_reward, RewardVideoActivity.class);
-        bindButton(R.id.bt_interstitial, InterstitialActivity.class);
         bindButton(R.id.bt_splash, SplashAdActivity.class);
         bindButton(R.id.bt_native, NativeAdActivity.class);
         bindButton(R.id.bt_new_interstitial, NewInterstitialActivity.class);

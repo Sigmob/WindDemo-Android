@@ -59,7 +59,7 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_interstitial);
+        setContentView(R.layout.activity_new_interstitial);
 
         placementId = Constants.newInterstitial_placement_id;
 

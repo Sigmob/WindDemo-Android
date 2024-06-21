@@ -49,10 +49,6 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InterstitialActivity"
-            android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".NewInterstitialActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
@@ -60,17 +56,6 @@
             android:name=".RewardVideoActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="sensor" />
-
-        <provider
-            android:name="com.sigmob.sdk.SigmobFileProvider"
-            android:authorities="${applicationId}.sigprovider"
-            android:exported="false"
-            android:grantUriPermissions="true"
-            android:initOrder="200">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/sigmob_provider_paths" />
-        </provider>
 
         <activity
             android:name=".SplashActivity"
