@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WindAds.requestPermission(this);
 
         setTitle("Sigmob SDK Version : "+ WindAds.getVersion());
 
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         bindButton(R.id.bt_splash, SplashAdActivity.class);
         bindButton(R.id.bt_native, NativeAdActivity.class);
         bindButton(R.id.bt_new_interstitial, NewInterstitialActivity.class);
-        bindButton(R.id.bt_device, DeviceActivity.class);
     }
     private void bindButton(@IdRes int id, final Class clz) {
         this.findViewById(id).setOnClickListener(new View.OnClickListener() {

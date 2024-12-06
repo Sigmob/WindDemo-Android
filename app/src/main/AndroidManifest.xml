@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sigmob.android.demo">
 
-    <uses-sdk tools:overrideLibrary="com.bun.miitmdid" />
-
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -24,10 +22,6 @@
         android:roundIcon="@mipmap/windmill_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".DeviceActivity"
-            android:exported="true" />
-        
         <activity
             android:name=".natives.NativeAdUnifiedRecycleActivity"
             android:configChanges="orientation|screenSize"
