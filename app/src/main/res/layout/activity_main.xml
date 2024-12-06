@@ -22,6 +22,21 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/bt_sdk_init"
+                android:layout_width="240dp"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="SDK初始化" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
                 android:id="@+id/bt_reward"
                 android:layout_width="240dp"
                 android:layout_height="60dp"
