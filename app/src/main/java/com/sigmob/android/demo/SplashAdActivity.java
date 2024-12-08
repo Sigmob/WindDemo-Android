@@ -65,13 +65,12 @@ public class SplashAdActivity extends Activity {
 
     }
 
-    private void loadAd(){
+    private void loadAd(boolean show){
 
         Map<String, Object> options = new HashMap<>();
         options.put("user_id", userId);
 
         WindSplashAdRequest splashAdRequest = new WindSplashAdRequest(placementId, userId, options);
-
         splashAd = new WindSplashAD(splashAdRequest, new WindSplashADListener() {
             @Override
             public void onSplashAdShow(String placementId) {
@@ -116,7 +115,12 @@ public class SplashAdActivity extends Activity {
             }
         });
 
-        splashAd.loadAd();
+        if (show){
+            splashAd.loadAndShow((ViewGroup)getWindow().getDecorView());
+        }else{
+            splashAd.loadAd();
+
+        }
 
     }
 
@@ -155,12 +159,11 @@ public class SplashAdActivity extends Activity {
         switch (view.getId()) {
             case R.id.bt_load_show:
                 resetCallBackData();
-                intent.putExtra("isLoadAndShow", true);
-                startActivityForResult(intent, 1);
+                loadAd(true);
                 break;
             case R.id.bt_load_only:
                 resetCallBackData();
-                loadAd();
+                loadAd(false);
                 break;
             case R.id.bt_show_only:
                 showAd();
@@ -205,6 +208,5 @@ public class SplashAdActivity extends Activity {
                 logCallBack(key, value);
             }
         }
-
     }
 }

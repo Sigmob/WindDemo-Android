@@ -98,62 +98,116 @@ public class MainActivity extends AppCompatActivity {
         WindAds.setOAIDCertPem(loadOaidCertPem(this));
 
         ads.setUserAge(18);
-        ads.setAdult(true);//是否成年
-        ads.setPersonalizedAdvertisingOn(true);//是否开启个性化推荐接口
-        ads.setSensorStatus(true); //允许使用传感器
+        /*
+         * 是否成年
+         * true 成年, false 未成年，默认值为true
+         */
+        ads.setAdult(true);
+        /*
+         * 是否开启个性化推荐接口
+         * true 开启, false 关闭,默认值为true
+         */
+        ads.setPersonalizedAdvertisingOn(true);
+        /*
+         * 是否允许使用传感器
+         * true 开启, false 关闭,默认值为true
+         */
+        ads.setSensorStatus(true);
         ads.setIsAgeRestrictedUser(WindAgeRestrictedUserStatus.NO);//coppa//是否年龄限制
         ads.setUserGDPRConsentStatus(WindConsentStatus.ACCEPT);//是否接受gdpr协议
-
 
         WindAdOptions windAdOptions = new WindAdOptions(Constants.app_id, Constants.app_key);
 
         //设置自定义设备信息，允许开发者自行传入设备及用户信息
         windAdOptions.setCustomController(new WindCustomController() {
+
+            /**
+             * 是否允许SDK主动获取地理位置信息
+             *
+             * @return true可以获取，false禁止获取。默认为true
+             */
             @Override
             public boolean isCanUseLocation() {
                 return false;
             }
-
+            /**
+             * 当isCanUseLocation=false时，可传入地理位置信息，sdk使用您传入的地理位置信息
+             *
+             * @return 地理位置参数 或者 null
+             */
             @Override
             public Location getLocation() {
                 return null;
             }
-
+            /**
+             * 是否允许SDK主动获取手机设备信息，如：imei，运营商信息
+             *
+             * @return true允许获取，false禁止获取。默认为true
+             */
             @Override
             public boolean isCanUsePhoneState() {
                 return false;
             }
+            /**
+             * 当isCanUsePhoneState=false时，可传入imei信息，sdk使用您传入的imei信息
+             *
+             * @return imei信息 或者 null
+             */
 
             @Override
             public String getDevImei() {
                  return null;
             }
-
+            /**
+             * 是否允许SDK主动获取OAID
+             *
+             * @return true允许获取，false禁止获取。默认为true
+             */
             @Override
             public boolean isCanUseOaid() {
                 return true;
             }
-
+            /**
+             * 当isCanUseOaid = false，开发者可以传入oaid
+             *
+             * @return oaid 或者 null
+             */
             @Override
             public String getDevOaid() {
                 return null;
             }
-
+            /**
+             * 是否允许SDK主动获取Android id
+             *
+             * @return true允许获取，false禁止获取。默认为true
+             */
             @Override
             public boolean isCanUseAndroidId() {
                 return true;
             }
-
+            /**
+             * isCanUseAndroidId=false时，可传入android id信息，SDK使用您传入的android id信息
+             *
+             * @return android id信息 或者 null
+             */
             @Override
             public String getAndroidId() {
                 return null;
             }
-
+            /**
+             * 是否允许SDK主动收集上传应用列表
+             *
+             * @return true 允许SDK收集，false 开发者传入
+             */
             @Override
             public boolean isCanUseAppList() {
                 return false;
             }
-
+            /**
+             *  当isCanUseAppList = false，那么调用开发者传入的应用列表
+             *
+             * @return  开发者收集应用列表信息或者null
+             */
             @Override
             public List<PackageInfo> getInstallPackageInfoList() {
                 return null;
