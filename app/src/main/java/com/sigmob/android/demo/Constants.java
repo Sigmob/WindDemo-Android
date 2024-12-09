@@ -17,27 +17,12 @@ public class Constants {
     public static final String CONF_APP_DESC = "conf_appDesc";
     public static final String CONF_HALF_SPLASH = "conf_half_splash";
 
-    public static String app_id = null;
-    public static String app_key = null;
-    public static String reward_placement_id = null;
-    public static String splash_placement_id = null;
-    public static String fullScreen_placement_id = null;
-    public static String native_unified_placement_id = null;
-    public static String newInterstitial_placement_id = null;
+    public static String app_id = "6878";
+    public static String app_key = "8ebc1fd1c27e650c";
+    public static String reward_placement_id = "ea1f8ea2d90";
+    public static String splash_placement_id = "ea1f8f21300";
+    public static String native_unified_placement_id = "ed70b4760ff";
+    public static String newInterstitial_placement_id = "f51c93b6bf6";
 
-    public static void loadDefualtAdSetting(Context context) {
-        try {
-            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(context.getApplicationInfo().packageName, PackageManager.GET_META_DATA);
-            app_id = String.valueOf(appInfo.metaData.get("sigmob.app_id"));
-            app_key = appInfo.metaData.getString("sigmob.app_key");
-            reward_placement_id = appInfo.metaData.getString("sigmob.reward_placement_id");
-            splash_placement_id = appInfo.metaData.getString("sigmob.splash_placement_id");
-            fullScreen_placement_id = appInfo.metaData.getString("sigmob.fullScreen_placement_id");
-            native_unified_placement_id = appInfo.metaData.getString("sigmob.native_unified_placement_id");
-            newInterstitial_placement_id = appInfo.metaData.getString("sigmob.newInterstitial_placement_id");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
