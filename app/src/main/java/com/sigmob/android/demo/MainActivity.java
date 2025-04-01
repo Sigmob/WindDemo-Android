@@ -3,12 +3,14 @@ package com.sigmob.android.demo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.IdRes;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sigmob.android.demo.natives.NativeAdActivity;
 import com.sigmob.windad.OnInitializationListener;
+import com.sigmob.windad.OnStartListener;
 import com.sigmob.windad.WindAdOptions;
 import com.sigmob.windad.WindAds;
 import com.sigmob.windad.WindAgeRestrictedUserStatus;
@@ -27,7 +30,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -38,44 +40,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setTitle("Sigmob SDK Version : "+ WindAds.getVersion());
+        setTitle("Sigmob SDK Version : " + WindAds.getVersion());
 
-        this.findViewById(R.id.bt_sdk_init).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                initSDK();
-            }
-        });
+        findViewById(R.id.bt_sdk_init).setOnClickListener(view -> initSDK());
         bindButton(R.id.bt_reward, RewardVideoActivity.class);
         bindButton(R.id.bt_splash, SplashAdActivity.class);
         bindButton(R.id.bt_native, NativeAdActivity.class);
         bindButton(R.id.bt_new_interstitial, NewInterstitialActivity.class);
     }
-    private void bindButton(@IdRes int id, final Class clz) {
-        this.findViewById(id).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (WindAds.sharedAds().isInit()){
-                    Intent intent = new Intent(MainActivity.this, clz);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(MainActivity.this, "请先进行SDK初始化", Toast.LENGTH_SHORT).show();
 
-                }
-
+    private void bindButton(@IdRes int id, Class<?> clz) {
+        findViewById(id).setOnClickListener(v -> {
+            if (WindAds.sharedAds().isInit()) {
+                Intent intent = new Intent(MainActivity.this, clz);
+                startActivity(intent);
+            } else {
+                Toast.makeText(MainActivity.this, "请先进行 SDK 初始化", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private String loadOaidCertPem(Context context){
+    private String loadOaidCertPem(Context context) {
         try {
-
-            InputStream is;
             String defaultPemCert = context.getPackageName() + ".cert.pem";
             AssetManager assetManager = context.getAssets();
-
-            is = assetManager.open(defaultPemCert);
+            InputStream is = assetManager.open(defaultPemCert);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
             StringBuilder builder = new StringBuilder();
@@ -85,149 +74,231 @@ public class MainActivity extends AppCompatActivity {
                 builder.append('\n');
             }
             return builder.toString();
-
-        }catch (Throwable th){
-
+        } catch (Throwable th) {
+            Log.e(TAG, "loadOaidCertPem: error = " + th.getMessage());
         }
         return "";
     }
 
     private void initSDK() {
-
         WindAds ads = WindAds.sharedAds();
         WindAds.setOAIDCertPem(loadOaidCertPem(this));
 
         ads.setUserAge(18);
         /*
          * 是否成年
-         * true 成年, false 未成年，默认值为true
+         * true-成年；false-未成年；默认值为 true
          */
         ads.setAdult(true);
         /*
          * 是否开启个性化推荐接口
-         * true 开启, false 关闭,默认值为true
+         * true-开启；false-关闭；默认值为 true
          */
         ads.setPersonalizedAdvertisingOn(true);
         /*
          * 是否允许使用传感器
-         * true 开启, false 关闭,默认值为true
+         * true-开启；false-关闭；默认值为 true
          */
         ads.setSensorStatus(true);
-        ads.setIsAgeRestrictedUser(WindAgeRestrictedUserStatus.NO);//coppa//是否年龄限制
-        ads.setUserGDPRConsentStatus(WindConsentStatus.ACCEPT);//是否接受gdpr协议
+        // coppa，是否年龄限制
+        ads.setIsAgeRestrictedUser(WindAgeRestrictedUserStatus.NO);
+        // 是否接受 gdpr 协议
+        ads.setUserGDPRConsentStatus(WindConsentStatus.ACCEPT);
 
+        String[] opArray = getNetworkOperator();
         WindAdOptions windAdOptions = new WindAdOptions(Constants.app_id, Constants.app_key);
-
-        //设置自定义设备信息，允许开发者自行传入设备及用户信息
+        // 设置自定义设备信息，允许开发者自行传入设备及用户信息
         windAdOptions.setCustomController(new WindCustomController() {
-
             /**
-             * 是否允许SDK主动获取地理位置信息
+             * 是否允许 SDK 主动获取地理位置信息
              *
-             * @return true可以获取，false禁止获取。默认为true
+             * @return true 可以获取，false 禁止获取。默认为 true
              */
             @Override
             public boolean isCanUseLocation() {
                 return false;
             }
+
             /**
-             * 当isCanUseLocation=false时，可传入地理位置信息，sdk使用您传入的地理位置信息
+             * 当 isCanUseLocation=false 时，Sigmob 使用开发者传入的地理位置信息
              *
-             * @return 地理位置参数 或者 null
+             * @return 地理位置参数或者 null
              */
             @Override
             public Location getLocation() {
                 return null;
             }
+
             /**
-             * 是否允许SDK主动获取手机设备信息，如：imei，运营商信息
+             * 是否允许 SDK 主动获取 IMEI
              *
-             * @return true允许获取，false禁止获取。默认为true
+             * @return true 可以使用，false 禁止使用。默认为 true
              */
             @Override
             public boolean isCanUsePhoneState() {
                 return false;
             }
-            /**
-             * 当isCanUsePhoneState=false时，可传入imei信息，sdk使用您传入的imei信息
-             *
-             * @return imei信息 或者 null
-             */
 
+            /**
+             * 当 isCanUsePhoneState=false 时，Sigmob 使用开发者传入的 IMEI 信息
+             *
+             * @return IMEI 或者 null
+             */
             @Override
             public String getDevImei() {
-                 return null;
+                return null;
             }
+
             /**
-             * 是否允许SDK主动获取OAID
+             * 是否允许 SDK 主动获取 OAID
              *
-             * @return true允许获取，false禁止获取。默认为true
+             * @return true 可以使用，false 禁止使用。默认为 true
              */
             @Override
             public boolean isCanUseOaid() {
                 return true;
             }
+
             /**
-             * 当isCanUseOaid = false，开发者可以传入oaid
+             * 当 isCanUseOaid=false 时，Sigmob 使用开发者传入的 OAID 信息
              *
-             * @return oaid 或者 null
+             * @return OAID 或者 null
              */
             @Override
             public String getDevOaid() {
                 return null;
             }
+
             /**
-             * 是否允许SDK主动获取Android id
+             * 是否允许 SDK 主动获取 AndroidId
              *
-             * @return true允许获取，false禁止获取。默认为true
+             * @return true 可以使用，false 禁止使用。默认为 true
              */
             @Override
             public boolean isCanUseAndroidId() {
                 return true;
             }
+
             /**
-             * isCanUseAndroidId=false时，可传入android id信息，SDK使用您传入的android id信息
+             * isCanUseAndroidId=false 时，Sigmob 使用开发者传入的 AndroidId 信息
              *
-             * @return android id信息 或者 null
+             * @return AndroidId 或者 null
              */
             @Override
             public String getAndroidId() {
                 return null;
             }
+
             /**
-             * 是否允许SDK主动收集上传应用列表
+             * 是否允许 SDK 查询已安装应用列表
              *
-             * @return true 允许SDK收集，false 开发者传入
+             * @return true 可以使用，false 禁止使用
              */
             @Override
             public boolean isCanUseAppList() {
                 return false;
             }
+
             /**
-             *  当isCanUseAppList = false，那么调用开发者传入的应用列表
+             * isCanUseAppList=false 时，Sigmob 使用开发者传入的已安装应用列表信息
              *
-             * @return  开发者收集应用列表信息或者null
+             * @return 应用列表或者 null
              */
             @Override
             public List<PackageInfo> getInstallPackageInfoList() {
-                return null;
+                Context applicationContext = getApplicationContext();
+                List<PackageInfo> result = MainActivity.this.getInstallPackageInfoList(applicationContext);
+                Log.d(TAG, "getInstallPackageInfoList: result = " + result);
+                return result;
+            }
+
+            /**
+             * 是否允许 SDK 查询运营商编码（4.22.0 版本新增）
+             *
+             * @return true 可以使用，false 禁止使用
+             */
+            @Override
+            public boolean isCanUseSimOperator() {
+                return true;
+            }
+
+            /**
+             * isCanUseSimOperator=false 时，Sigmob 使用开发者传入的运营商编码，例如：46000（4.22.0 版本新增）
+             */
+            @Override
+            public String getDevSimOperatorCode() {
+                String result = (opArray == null || opArray.length == 0) ? null : opArray[0];
+                return result;
+            }
+
+            /**
+             * isCanUseSimOperator=false 时，Sigmob 使用开发者传入的运营商名称，例如：中国移动（4.22.0 版本新增）
+             */
+            @Override
+            public String getDevSimOperatorName() {
+                String result = (opArray == null || opArray.length == 0) ? null : opArray[1];
+                return result;
             }
         });
 
-        //SDK初始化
-        ads.startWithOptions(this, windAdOptions, new OnInitializationListener() {
+        // SDK 初始化
+        ads.init(getApplicationContext(), windAdOptions, new OnInitializationListener() {
             @Override
-            public void OnInitializationSuccess() {
-                Toast.makeText(MainActivity.this, "SDK 初始化成功", Toast.LENGTH_SHORT).show();
+            public void onInitializationSuccess() {
+                Log.i(TAG, "initSDK#onInitializationSuccess");
             }
 
             @Override
-            public void OnInitializationFail(String error) {
-                Toast.makeText(MainActivity.this, "SDK 初始化失败 : " +error, Toast.LENGTH_SHORT).show();
+            public void onInitializationFail(String error) {
+                Log.e(TAG, "initSDK#onInitializationFail: error =" + error);
+            }
+        });
+
+        // SDK 启动
+        ads.start(new OnStartListener() {
+            @Override
+            public void onStartSuccess() {
+                Log.i(TAG, "initSDK#OnStartSuccess");
+            }
+
+            @Override
+            public void onStartFail(String error) {
+                Log.e(TAG, "initSDK#OnStartSuccess: error =" + error);
             }
         });
     }
 
+    public List<PackageInfo> getInstallPackageInfoList(Context ctx) {
+        PackageManager pm = ctx.getPackageManager();
+        return pm.getInstalledPackages(0);
+    }
+
+    public String[] getNetworkOperator() {
+        Context context = getApplicationContext();
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (tm == null) return null;
+
+        // 运营商编码号，例如：46000
+        String operatorCode;
+        int phoneType = tm.getPhoneType();
+        int simState = tm.getSimState();
+        Log.d(TAG, "getNetworkOperator: phoneType = " + phoneType + ", simState = " + simState);
+        if (phoneType == TelephonyManager.PHONE_TYPE_CDMA && simState == TelephonyManager.SIM_STATE_READY) {
+            operatorCode = tm.getSimOperator();
+            Log.d(TAG, "getNetworkOperator: simOperator = " + operatorCode);
+        } else {
+            operatorCode = tm.getNetworkOperator();
+            Log.d(TAG, "getNetworkOperator: networkOperator = " + operatorCode);
+        }
+
+        // 运营商名称，例如：中国移动
+        String operatorName = tm.getNetworkOperatorName();
+        return new String[]{operatorCode, operatorName};
+    }
+
+    public void log(String method, Object result) {
+        Log.d(TAG, method + ": result = " + result + ", thread = " + Thread.currentThread().getName());
+    }
 
     @Override
     protected void onResume() {
@@ -255,18 +326,11 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce = false;
-            }
-        }, 2000);
+        new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
     }
-
 }
