@@ -70,7 +70,7 @@ public class RewardVideoActivity extends Activity {
 
         Map<String, Object> options = new HashMap<>();
         options.put("user_id", String.valueOf(userID));
-        windRewardedVideoAd = new WindRewardVideoAd( new WindRewardAdRequest(placementId, userID, options));
+        windRewardedVideoAd = new WindRewardVideoAd(new WindRewardAdRequest(placementId, userID, options));
         windRewardedVideoAd.setWindRewardVideoAdListener(new WindRewardVideoAdListener() {
             @Override
             public void onRewardAdLoadSuccess(final String placementId) {
@@ -132,8 +132,6 @@ public class RewardVideoActivity extends Activity {
                 Log.d("windSDK", "------onRewardAdPlayError------" + error.toString() + ":" + placementId);
                 logCallBack("onRewardAdPlayError", error.toString());
             }
-
-
         });
     }
 
@@ -163,18 +161,17 @@ public class RewardVideoActivity extends Activity {
                 }
                 break;
             case R.id.bt_show_ad:
-                HashMap option = new HashMap();
+                HashMap<String, String> option = new HashMap<>();
                 option.put(WindAds.AD_SCENE_ID, "567");
                 option.put(WindAds.AD_SCENE_DESC, "转盘抽奖");
                 if (windRewardedVideoAd != null && windRewardedVideoAd.isReady()) {
-                    windRewardedVideoAd.show( option);
+                    windRewardedVideoAd.show(option);
                 } else {
                     Log.d("windSDK", "------Ad is not Ready------");
                 }
                 break;
         }
     }
-
 
     private void resetCallBackData() {
         callBackDataList.clear();
@@ -198,5 +195,4 @@ public class RewardVideoActivity extends Activity {
             adapter.notifyDataSetChanged();
         }
     }
-
 }

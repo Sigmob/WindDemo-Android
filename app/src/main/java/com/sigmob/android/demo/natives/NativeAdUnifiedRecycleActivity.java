@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class NativeAdUnifiedRecycleActivity extends Activity {
 
     private static final int LIST_ITEM_COUNT = 10;
@@ -53,10 +52,10 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
 
     private List<WindNativeAdData> mData;
 
-    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
 
-    private int adWidth; // 广告宽高
-
+    // 广告宽高
+    private int adWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,6 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
     private void getExtraInfo() {
         Intent intent = getIntent();
         placementId = intent.getStringExtra("placementId");
-
     }
 
     public static int screenWidthAsIntDips(Context context) {
@@ -80,7 +78,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
     }
 
     private void initListView() {
-        mListView = (LoadMoreRecyclerView) findViewById(R.id.unified_native_ad_recycle);
+        mListView = findViewById(R.id.unified_native_ad_recycle);
         mListView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         mData = new ArrayList<>();
         myAdapter = new MyAdapter(this, mData);
@@ -92,16 +90,11 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
             }
         });
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                loadListAd();
-            }
-        }, 500);
+        mHandler.postDelayed(this::loadListAd, 500);
     }
 
     /**
-     * 加载feed广告
+     * 加载 feed 广告
      */
     private void loadListAd() {
         Log.d("windSDK", adWidth + "-----------loadListAd-----------" + placementId);
@@ -110,14 +103,14 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
 
         options.put("user_id", String.valueOf(userID));
         if (windNativeUnifiedAd == null) {
-            windNativeUnifiedAd = new WindNativeUnifiedAd( new WindNativeAdRequest(placementId, String.valueOf(userID),3,  options));
+            windNativeUnifiedAd = new WindNativeUnifiedAd(new WindNativeAdRequest(placementId, String.valueOf(userID), 3, options));
         }
 
         windNativeUnifiedAd.setNativeAdLoadListener(new WindNativeUnifiedAd.WindNativeAdLoadListener() {
             @Override
             public void onAdError(WindAdError error, String placementId) {
                 Log.d("windSDK", "onAdError:" + error.toString() + ":" + placementId);
-                Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdError"+ error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdError" + error.toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -127,11 +120,9 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                 }
 
                 Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdLoad", Toast.LENGTH_SHORT).show();
-
-                if (list != null && list.size() > 0) {
+                if (list != null && !list.isEmpty()) {
                     Log.d("windSDK", "onFeedAdLoad:" + list.size());
-                    for (final WindNativeAdData adData : list) {
-
+                    for ( WindNativeAdData adData : list) {
                         for (int i = 0; i < LIST_ITEM_COUNT; i++) {
                             mData.add(null);
                         }
@@ -143,10 +134,8 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                     myAdapter.notifyDataSetChanged();
                 }
             }
-
         });
         windNativeUnifiedAd.loadAd();
-
     }
 
     @Override
@@ -165,7 +154,6 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
     private static class MyAdapter extends RecyclerView.Adapter {
 
         private static final int FOOTER_VIEW_COUNT = 1;
-
         private static final int ITEM_VIEW_TYPE_LOAD_MORE = -1;
         private static final int ITEM_VIEW_TYPE_NORMAL = 0;
         private static final int ITEM_VIEW_TYPE_AD = 1;
@@ -217,94 +205,79 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         }
 
         private void bindData(final AdViewHolder adViewHolder, final WindNativeAdData adData) {
-
             View nativeAdView = adViewHolder.adRender.getNativeAdView(mActivity, adData, new NativeADEventListener() {
                 @Override
                 public void onAdExposed() {
                     Toast.makeText(mActivity, "onAdExposed:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "onAdExposed: ");
-
                 }
 
                 @Override
                 public void onAdClicked() {
                     Toast.makeText(mActivity, "onAdClicked:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "onAdClicked: ");
-
                 }
+
                 @Override
                 public void onAdDetailShow() {
                     Toast.makeText(mActivity, "onAdDetailShow:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "onAdDetailShow: ");
                 }
 
                 @Override
                 public void onAdDetailDismiss() {
                     Toast.makeText(mActivity, "onAdDetailDismiss:", Toast.LENGTH_SHORT).show();
-
                     Log.d("WindSDK", "onAdDetailDismiss");
-
                 }
 
                 @Override
                 public void onAdError(WindAdError error) {
                     Toast.makeText(mActivity, "onAdError: " + error.toString(), Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "onAdError error code :" + error.toString());
                 }
             }, new WindNativeAdData.NativeADMediaListener() {
                 @Override
                 public void onVideoLoad() {
                     Toast.makeText(mActivity, "onVideoLoad:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "----------onVideoLoad----------");
                 }
 
                 @Override
                 public void onVideoError(WindAdError error) {
-                    Toast.makeText(mActivity, "onVideoError:"+ error.toString(), Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(mActivity, "onVideoError:" + error.toString(), Toast.LENGTH_SHORT).show();
                     Log.d("windSDK", "----------onVideoError----------:" + error.toString());
                 }
 
                 @Override
                 public void onVideoStart() {
                     Toast.makeText(mActivity, "onVideoStart:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "----------onVideoStart----------");
                 }
 
                 @Override
                 public void onVideoPause() {
                     Toast.makeText(mActivity, "onVideoPause:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "----------onVideoPause----------");
                 }
 
                 @Override
                 public void onVideoResume() {
                     Toast.makeText(mActivity, "onVideoResume:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "----------onVideoResume----------");
                 }
 
                 @Override
                 public void onVideoCompleted() {
                     Toast.makeText(mActivity, "onVideoCompleted:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "----------onVideoCompleted----------");
                 }
             });
 
-            //设置dislike弹窗
+            // 设置 Dislike 弹窗
             adData.setDislikeInteractionCallback(mActivity, new WindNativeAdData.DislikeInteractionCallback() {
                 @Override
                 public void onShow() {
                     Toast.makeText(mActivity, "dislike onShow:", Toast.LENGTH_SHORT).show();
-
                     Log.d("windSDK", "onShow: ");
                 }
 
@@ -313,7 +286,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                     Toast.makeText(mActivity, "dislike onSelected:" + position + ":" + value + ":" + enforce, Toast.LENGTH_SHORT).show();
 
                     Log.d("windSDK", "onSelected: " + position + ":" + value + ":" + enforce);
-                    //用户选择不喜欢原因后，移除广告展示
+                    // 用户选择不喜欢原因后，移除广告展示
                     mData.remove(adData);
                     notifyDataSetChanged();
                 }
@@ -325,14 +298,12 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                     Log.d("windSDK", "onAdExposed: ");
                 }
             });
-            //添加进容器
+            // 添加进容器
             if (adViewHolder.adContainer != null) {
                 adViewHolder.adContainer.removeAllViews();
-                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                adViewHolder.adContainer.addView(nativeAdView,lp);
-
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                adViewHolder.adContainer.addView(nativeAdView, lp);
             }
         }
 
@@ -356,20 +327,18 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                         return ITEM_VIEW_TYPE_AD;
                     }
                 }
-
             }
             return super.getItemViewType(position);
         }
 
         private static class AdViewHolder extends RecyclerView.ViewHolder {
-
             FrameLayout adContainer;
-            //媒体自渲染的View
+            // 媒体自渲染的 View
             NativeAdDemoRender adRender;
 
             public AdViewHolder(View itemView) {
                 super(itemView);
-                adContainer = (FrameLayout) itemView.findViewById(R.id.iv_list_item_container);
+                adContainer = itemView.findViewById(R.id.iv_list_item_container);
                 adRender = new NativeAdDemoRender();
             }
         }
@@ -379,7 +348,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
 
             public NormalViewHolder(View itemView) {
                 super(itemView);
-                idle = (TextView) itemView.findViewById(R.id.text_idle);
+                idle = itemView.findViewById(R.id.text_idle);
             }
         }
 
@@ -389,9 +358,10 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
 
             public LoadMoreViewHolder(View itemView) {
                 super(itemView);
-                itemView.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
-                mTextView = (TextView) itemView.findViewById(R.id.tv_load_more_tip);
-                mProgressBar = (ProgressBar) itemView.findViewById(R.id.pb_load_more_progress);
+                itemView.setLayoutParams(new RecyclerView.LayoutParams(
+                        RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
+                mTextView = itemView.findViewById(R.id.tv_load_more_tip);
+                mProgressBar = itemView.findViewById(R.id.pb_load_more_progress);
             }
         }
     }

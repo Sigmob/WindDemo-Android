@@ -16,16 +16,16 @@ import com.sigmob.android.demo.R;
 import java.util.List;
 
 /**
- * created by lance on   2021/12/8 : 5:43 下午
+ * created by lance on 2021/12/8 : 5:43 下午
  */
 public class ExpandAdapter extends BaseAdapter {
 
-    private List<CallBackItem> mData;
-    private Context mContext;
+    private final List<CallBackItem> mData;
+    private final Context mContext;
 
     public ExpandAdapter(Context context, List<CallBackItem> data) {
-        this.mContext = context;
-        this.mData = data;
+        mContext = context;
+        mData = data;
     }
 
     @Override
@@ -81,16 +81,14 @@ public class ExpandAdapter extends BaseAdapter {
     }
 
     private static class MyViewHolder {
-
         TextView callBackText;
         ImageView expandImage;
         TextView infoText;
 
         public MyViewHolder(View convertView) {
-            callBackText = (TextView) convertView.findViewById(R.id.tv_log);
-            expandImage = (ImageView) convertView.findViewById(R.id.iv_log);
-            infoText = (TextView) convertView.findViewById(R.id.child_info);
+            callBackText = convertView.findViewById(R.id.tv_log);
+            expandImage = convertView.findViewById(R.id.iv_log);
+            infoText = convertView.findViewById(R.id.child_info);
         }
     }
-
 }

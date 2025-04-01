@@ -18,7 +18,6 @@ import com.sigmob.windad.newInterstitial.WindNewInterstitialAd;
 import com.sigmob.windad.newInterstitial.WindNewInterstitialAdListener;
 import com.sigmob.windad.newInterstitial.WindNewInterstitialAdRequest;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +31,7 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
 
     private ListView listView;
     private ExpandAdapter adapter;
-    private List<CallBackItem> callBackDataList = new ArrayList<>();
+    private final List<CallBackItem> callBackDataList = new ArrayList<>();
 
     private void initCallBack() {
         resetCallBackData();
@@ -62,12 +61,8 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
         setContentView(R.layout.activity_new_interstitial);
 
         placementId = Constants.newInterstitial_placement_id;
-
-
         WebView.setWebContentsDebuggingEnabled(true);
-
         initCallBack();
-
     }
 
     public void ButtonClick(View view) {
@@ -80,17 +75,17 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
                 if (WindNewInterstitialAd == null) {
                     Map<String, Object> options = new HashMap<>();
                     options.put("user_id", String.valueOf(userID));
-                    WindNewInterstitialAd = new WindNewInterstitialAd( new WindNewInterstitialAdRequest(placementId, userID, options));
+                    WindNewInterstitialAd = new WindNewInterstitialAd(new WindNewInterstitialAdRequest(placementId, userID, options));
                     WindNewInterstitialAd.setWindNewInterstitialAdListener(this);
                 }
                 WindNewInterstitialAd.loadAd();
                 break;
             case R.id.bt_show_ad:
-                HashMap option = new HashMap();
+                HashMap<String, String> option = new HashMap<>();
                 option.put(WindAds.AD_SCENE_ID, "567");
                 option.put(WindAds.AD_SCENE_DESC, "转盘抽奖");
                 if (WindNewInterstitialAd != null && WindNewInterstitialAd.isReady()) {
-                    WindNewInterstitialAd.show( option);
+                    WindNewInterstitialAd.show(option);
                 } else {
                     Log.d("windSDK", "------Ad is not Ready------");
                 }
@@ -115,21 +110,21 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
     @Override
     public void onInterstitialAdLoadSuccess(final String placementId) {
         Log.d("windSDK", "------onInterstitialAdLoadSuccess------" + placementId);
-//        Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
         logCallBack("onInterstitialAdLoadSuccess", "");
     }
 
     @Override
     public void onInterstitialAdPreLoadSuccess(String s) {
         Log.d("windSDK", "------onInterstitialAdPreLoadSuccess------" + placementId);
-//        Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
         logCallBack("onInterstitialAdPreLoadSuccess", "");
     }
 
     @Override
     public void onInterstitialAdPreLoadFail(String s) {
         Log.d("windSDK", "------onInterstitialAdPreLoadFail------" + placementId);
-//        Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
         logCallBack("onInterstitialAdPreLoadFail", "");
     }
 
@@ -138,7 +133,6 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
         Log.d("windSDK", "------onInterstitialAdShow------" + placementId);
         logCallBack("onInterstitialAdShow", "");
     }
-
 
     @Override
     public void onInterstitialAdClicked(final String placementId) {
@@ -157,7 +151,6 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
         Log.d("windSDK", "------onInterstitialAdLoadError------" + error.toString() + ":" + placementId);
         logCallBack("onInterstitialAdLoadError", error.toString());
     }
-
 
     @Override
     public void onInterstitialAdShowError(final WindAdError error, final String placementId) {

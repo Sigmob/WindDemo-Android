@@ -12,7 +12,6 @@ import androidx.annotation.Nullable;
 
 import com.sigmob.android.demo.R;
 
-
 /**
  * Create by hanweiwei on 11/07/2018
  */

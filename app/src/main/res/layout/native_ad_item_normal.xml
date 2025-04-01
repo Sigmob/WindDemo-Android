@@ -18,10 +18,10 @@
                 android:id="@+id/img_logo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="5dp"
                 android:src="@mipmap/ic_launcher" />
 
@@ -31,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/img_logo"
-                android:layout_toLeftOf="@id/iv_dislike"
-                android:layout_toRightOf="@id/img_logo"
+                android:layout_toStartOf="@id/iv_dislike"
+                android:layout_toEndOf="@id/img_logo"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:singleLine="true"
@@ -47,8 +47,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_title"
                 android:layout_alignBottom="@id/img_logo"
-                android:layout_toLeftOf="@id/iv_dislike"
-                android:layout_toRightOf="@id/img_logo"
+                android:layout_toStartOf="@id/iv_dislike"
+                android:layout_toEndOf="@id/img_logo"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="2"
@@ -62,7 +62,6 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
                 android:clickable="true"
                 android:focusable="true"
@@ -82,7 +81,7 @@
                 android:id="@+id/btn_play"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="播放"
                 android:textColor="#080"
@@ -92,7 +91,7 @@
                 android:id="@+id/btn_pause"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:text="暂停"
                 android:textColor="#00f"
@@ -108,8 +107,8 @@
                 android:text="停止"
                 android:textColor="#f00"
                 android:textSize="14sp" />
-        </LinearLayout>
 
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/custom_container"
@@ -117,7 +116,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-            <!-- 原生广告的视频组件 高度可以设置wrap_content(默认按视频自身高度)或者自定义高度,例如:200dp-->
+            <!-- 原生广告的视频组件，高度可以设置 wrap_content（默认按视频自身高度）或者自定义高度，例如：200dp -->
             <FrameLayout
                 android:id="@+id/media_layout"
                 android:layout_width="match_parent"
@@ -125,7 +124,7 @@
                 android:layout_gravity="center"
                 android:background="#000" />
 
-            <!-- 原生广告的大图 高度可以设置wrap_content(默认按图片自身高度)或者自定义高度,例如:200dp-->
+            <!-- 原生广告的大图，高度可以设置 wrap_content（默认按图片自身高度）或者自定义高度，例如：200dp -->
             <ImageView
                 android:id="@+id/img_poster"
                 android:layout_width="match_parent"
@@ -180,12 +179,13 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="#03A9F4">
-            <!-- 原生广告的logo -->
+
+            <!-- 原生广告的 Logo -->
             <ImageView
                 android:id="@+id/channel_ad_logo"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentBottom="true"
                 android:gravity="center_vertical"
                 android:scaleType="centerInside"
@@ -207,10 +207,9 @@
                 android:text="立即下载"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
+
         </RelativeLayout>
 
-
     </LinearLayout>
-
 
 </FrameLayout>

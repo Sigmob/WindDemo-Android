@@ -19,15 +19,16 @@ public class PrivacyPolicyDialog extends Dialog {
 
     public interface OnPrivacyResultListener {
         void onAccept();
+
         void onReject();
     }
 
-    public PrivacyPolicyDialog( Context context) {
+    public PrivacyPolicyDialog(Context context) {
         super(context);
         init();
     }
 
-    public PrivacyPolicyDialog( Context context, int themeResId) {
+    public PrivacyPolicyDialog(Context context, int themeResId) {
         super(context, themeResId);
         init();
     }

@@ -8,11 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.sigmob.android.demo.callbackinfo.CallBackInfo;
 import com.sigmob.android.demo.callbackinfo.CallBackItem;
@@ -28,18 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 public class SplashAdActivity extends Activity {
-    private Spinner spinner;
-    private ArrayAdapter<String> arrayAdapter;
     private CheckBox fullScreen;
     private boolean isFullScreen;
     private String placementId;
 
     private ListView listView;
     private ExpandAdapter adapter;
-    private List<CallBackItem> callBackDataList = new ArrayList<>();
+    private final List<CallBackItem> callBackDataList = new ArrayList<>();
     private String userId = "123456789";
     private WindSplashAD splashAd;
-
 
     private void initCallBack() {
         resetCallBackData();
@@ -51,22 +45,19 @@ public class SplashAdActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d("windSDK", "------onItemClick------" + position);
                 CallBackItem callItem = callBackDataList.get(position);
-                if (callItem != null) {
-                    if (callItem.is_expand()) {
-                        callItem.set_expand(false);
-                    } else {
-                        callItem.set_expand(true);
-                    }
-                    adapter.notifyDataSetChanged();
+                if (callItem == null) return;
+
+                if (callItem.is_expand()) {
+                    callItem.set_expand(false);
+                } else {
+                    callItem.set_expand(true);
                 }
+                adapter.notifyDataSetChanged();
             }
         });
-
-
     }
 
-    private void loadAd(boolean show){
-
+    private void loadAd(boolean show) {
         Map<String, Object> options = new HashMap<>();
         options.put("user_id", userId);
 
@@ -75,31 +66,26 @@ public class SplashAdActivity extends Activity {
             @Override
             public void onSplashAdShow(String placementId) {
                 logCallBack("onSplashAdShow", "");
-
             }
 
             @Override
             public void onSplashAdLoadSuccess(String placementId) {
                 logCallBack("onSplashAdLoadSuccess", "");
-
             }
 
             @Override
             public void onSplashAdLoadFail(WindAdError error, String placementId) {
                 logCallBack("onSplashAdLoadFail", error.toString());
-
             }
 
             @Override
             public void onSplashAdShowError(WindAdError error, String placementId) {
                 logCallBack("onSplashAdShowError", error.toString());
-
             }
 
             @Override
             public void onSplashAdClick(String placementId) {
                 logCallBack("onSplashAdClick", "");
-
             }
 
             @Override
@@ -111,21 +97,18 @@ public class SplashAdActivity extends Activity {
             @Override
             public void onSplashAdSkip(String s) {
                 logCallBack("onSplashAdSkip", "");
-
             }
         });
 
-        if (show){
-            splashAd.loadAndShow((ViewGroup)getWindow().getDecorView());
-        }else{
+        if (show) {
+            splashAd.loadAndShow((ViewGroup) getWindow().getDecorView());
+        } else {
             splashAd.loadAd();
-
         }
-
     }
 
-    private void showAd(){
-        splashAd.show((ViewGroup)getWindow().getDecorView());
+    private void showAd() {
+        splashAd.show((ViewGroup) getWindow().getDecorView());
     }
 
     @Override
@@ -134,13 +117,7 @@ public class SplashAdActivity extends Activity {
         setContentView(R.layout.activity_splash_ad);
 
         fullScreen = findViewById(R.id.cb_fullscreen);
-
-        fullScreen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isFullScreen = isChecked;
-            }
-        });
+        fullScreen.setOnCheckedChangeListener((buttonView, isChecked) -> isFullScreen = isChecked);
 
         initCallBack();
     }
@@ -171,8 +148,6 @@ public class SplashAdActivity extends Activity {
         }
     }
 
-
-
     private void resetCallBackData() {
         callBackDataList.clear();
         for (int i = 0; i < CallBackInfo.SPLASH_CALLBACK.length; i++) {
@@ -199,14 +174,14 @@ public class SplashAdActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null){
-            HashMap<String, String> result = (HashMap<String, String>) data.getExtras().getSerializable("result");
-            Log.d("windSDK", "------onActivityResult------" + resultCode + ":" + resultCode + ":" + result.size());
-            for (Map.Entry<String, String> entry : result.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                logCallBack(key, value);
-            }
+        if (data == null) return;
+
+        HashMap<String, String> result = (HashMap<String, String>) data.getExtras().getSerializable("result");
+        Log.d("windSDK", "------onActivityResult------" + resultCode + ":" + resultCode + ":" + result.size());
+        for (Map.Entry<String, String> entry : result.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            logCallBack(key, value);
         }
     }
 }

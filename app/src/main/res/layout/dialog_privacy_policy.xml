@@ -9,8 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@color/colorGray"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
@@ -49,6 +49,7 @@
             android:text="《Sigmob SDK 合规指引》"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,6 +75,9 @@
                 android:background="@android:color/holo_blue_dark"
                 android:text="同意"
                 android:textColor="@android:color/white" />
+
         </LinearLayout>
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

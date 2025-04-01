@@ -4,21 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.ViewGroup;
 import android.widget.Toast;
-
-import com.sigmob.windad.Splash.WindSplashAD;
-import com.sigmob.windad.Splash.WindSplashADListener;
-import com.sigmob.windad.Splash.WindSplashAdRequest;
-import com.sigmob.windad.WindAdError;
-
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class SplashActivity extends Activity {
 
@@ -26,9 +12,8 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
+        // 展示隐私条款弹窗
         showPrivacyPolicyDialog();
-
     }
 
     private void showPrivacyPolicyDialog() {
@@ -45,8 +30,7 @@ public class SplashActivity extends Activity {
             @Override
             public void onReject() {
                 // 用户拒绝隐私政策
-                Toast.makeText(SplashActivity.this,
-                        "您需要同意隐私政策才能使用本应用",
+                Toast.makeText(SplashActivity.this, "您需要同意隐私政策才能使用本应用",
                         Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -69,14 +53,13 @@ public class SplashActivity extends Activity {
         jumpMainActivity();
     }
 
-
     /**
-     * 不可点击的开屏，使用该jump方法，而不是用jumpWhenCanClick
+     * 不可点击的开屏，使用该 jump 方法，而不是用 jumpWhenCanClick
      */
     private void jumpMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        this.startActivity(intent);
-        this.finish();
+        Intent intent = new Intent(this, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 }

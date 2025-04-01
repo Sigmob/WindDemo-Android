@@ -48,7 +48,6 @@ public class NativeAdDemoRender {
     private Button mCTAButton;
 
 
-
     public View getNativeAdView(Context context, final WindNativeAdData adData,
                                 final NativeADEventListener nativeADEventListener,
                                 final WindNativeAdData.NativeADMediaListener nativeADMediaListener) {
@@ -67,30 +66,30 @@ public class NativeAdDemoRender {
         if (nativeAdView.getParent() != null) {
             ((ViewGroup) nativeAdView.getParent()).removeView(nativeAdView);
         }
-        
+
 
         Log.d("windSDK", "renderAdView:" + adData.getTitle());
-        img_logo =nativeAdView.findViewById(R.id.img_logo);
-        ad_logo =nativeAdView.findViewById(R.id.channel_ad_logo);
-        img_dislike =nativeAdView.findViewById(R.id.iv_dislike);
+        img_logo = nativeAdView.findViewById(R.id.img_logo);
+        ad_logo = nativeAdView.findViewById(R.id.channel_ad_logo);
+        img_dislike = nativeAdView.findViewById(R.id.iv_dislike);
 
-        text_desc =nativeAdView.findViewById(R.id.text_desc);
+        text_desc = nativeAdView.findViewById(R.id.text_desc);
 
-        mButtonsContainer =nativeAdView.findViewById(R.id.video_btn_container);
-        mPlayButton =nativeAdView.findViewById(R.id.btn_play);
-        mPauseButton =nativeAdView.findViewById(R.id.btn_pause);
-        mStopButton =nativeAdView.findViewById(R.id.btn_stop);
+        mButtonsContainer = nativeAdView.findViewById(R.id.video_btn_container);
+        mPlayButton = nativeAdView.findViewById(R.id.btn_play);
+        mPauseButton = nativeAdView.findViewById(R.id.btn_pause);
+        mStopButton = nativeAdView.findViewById(R.id.btn_stop);
 
-        mMediaViewLayout =nativeAdView.findViewById(R.id.media_layout);
-        mImagePoster =nativeAdView.findViewById(R.id.img_poster);
+        mMediaViewLayout = nativeAdView.findViewById(R.id.media_layout);
+        mImagePoster = nativeAdView.findViewById(R.id.img_poster);
 
-        native_3img_ad_container =nativeAdView.findViewById(R.id.native_3img_ad_container);
-        img_1 =nativeAdView.findViewById(R.id.img_1);
-        img_2 =nativeAdView.findViewById(R.id.img_2);
-        img_3 =nativeAdView.findViewById(R.id.img_3);
+        native_3img_ad_container = nativeAdView.findViewById(R.id.native_3img_ad_container);
+        img_1 = nativeAdView.findViewById(R.id.img_1);
+        img_2 = nativeAdView.findViewById(R.id.img_2);
+        img_3 = nativeAdView.findViewById(R.id.img_3);
 
-        text_title =nativeAdView.findViewById(R.id.text_title);
-        mCTAButton =nativeAdView.findViewById(R.id.btn_cta);
+        text_title = nativeAdView.findViewById(R.id.text_title);
+        mCTAButton = nativeAdView.findViewById(R.id.btn_cta);
 
         //渲染UI
         if (!TextUtils.isEmpty(adData.getIconUrl())) {
@@ -157,16 +156,13 @@ public class NativeAdDemoRender {
 
             mButtonsContainer.setVisibility(View.VISIBLE);
 
-           View.OnClickListener listener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (v == mPlayButton) {
-                        adData.startVideo();
-                    } else if (v == mPauseButton) {
-                        adData.pauseVideo();
-                    } else if (v == mStopButton) {
-                        adData.stopVideo();
-                    }
+            View.OnClickListener listener = v -> {
+                if (v == mPlayButton) {
+                    adData.startVideo();
+                } else if (v == mPauseButton) {
+                    adData.pauseVideo();
+                } else if (v == mStopButton) {
+                    adData.stopVideo();
                 }
             };
             mPlayButton.setOnClickListener(listener);
@@ -188,12 +184,12 @@ public class NativeAdDemoRender {
     }
 
     private void updateAdAction(String ctaText) {
-        if (!TextUtils.isEmpty(ctaText)) {
-            //如果拉取广告包含CTA组件，则渲染该组件
+        if (TextUtils.isEmpty(ctaText)) {
+            mCTAButton.setVisibility(View.INVISIBLE);
+        } else {
+            // 如果拉取广告包含 CTA 组件，则渲染该组件
             mCTAButton.setText(ctaText);
             mCTAButton.setVisibility(View.VISIBLE);
-        } else {
-            mCTAButton.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -3,32 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sigmob.android.demo">
 
-
-    <!--必要权限-->
+    <!-- 必要权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!--可选权限，仅获取当前网络类型及状态-->
+    <!-- 可选，仅获取当前网络类型及状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!--可选，外部存储权限主要用于读写使用应用本身在外部存储的缓存目录，不会访问初应用缓存目录外的其它目录-->
+    <!-- 可选，外部存储权限主要用于读写使用应用本身在外部存储的缓存目录，不会访问初应用缓存目录外的其它目录 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--可选,仅用于获取IMEI或者运营商信息-->
+    <!-- 可选，仅用于获取 IMEI 或者运营商信息 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--可选,仅广告安装转化-->
+    <!-- 可选，仅广告安装转化 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
-    <!-- SigMob3.1.0版本新增：
-    建议添加“query_all_package”权限，
-    SigMob将通过此权限在Android R系统上判定广告对应的应用是否在用户的app上安装，
-    避免投放错误的广告，以此提高用户的广告体验。
-    若添加此权限，需要在您的用户隐私文档中声明！ -->
+    <!-- Sigmob 3.1.0版本新增：建议添加 “query_all_package” 权限，SigMob 将通过此权限在 Android R 系统上判定广告对应的应用是否在用户的设备上安装，避免投放错误的广告，以此提高用户的广告体验。若添加此权限，需要在您的用户隐私文档中声明！-->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
         tools:ignore="QueryAllPackagesPermission" />
 
-
     <application
         android:name=".MyApplication"
-
         android:icon="@mipmap/windmill_icon"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
@@ -85,7 +78,9 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" /> <!-- 以下是DEMO的测试ID,请勿使用到正式环境中去！ -->
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+
+        <!-- 以下是 DEMO 的测试 ID，请勿使用到正式环境中去！-->
         <meta-data
             android:name="sigmob.app_id"
             android:value="6878" />

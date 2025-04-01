@@ -1,7 +1,7 @@
 package com.sigmob.android.demo.callbackinfo;
 
 /**
- * created by lance on   2021/12/9 : 9:34 上午
+ * created by lance on 2021/12/9 : 9:34 上午
  */
 public class CallBackItem {
     private String text;

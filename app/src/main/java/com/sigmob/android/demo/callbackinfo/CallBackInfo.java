@@ -1,7 +1,7 @@
 package com.sigmob.android.demo.callbackinfo;
 
 /**
- * created by lance on   2021/12/9 : 9:22 上午
+ * created by lance on 2021/12/9 : 9:22 上午
  */
 public class CallBackInfo {
 
@@ -14,7 +14,6 @@ public class CallBackInfo {
             "onRewardAdClicked",
             "onRewardAdClosed",
             "onRewardAdRewarded"};
-
     public static String[] INTERSTITIAL_CALLBACK = {
             "onInterstitialAdLoadSuccess",
             "onInterstitialAdLoadError",
@@ -38,7 +37,6 @@ public class CallBackInfo {
             "onSplashAdSkip",
             "onSplashAdClick",
             "onSplashAdClose"};
-
     public static String[] NATIVE_CALLBACK = {
             "onAdLoad",
             "onAdError",
@@ -49,5 +47,4 @@ public class CallBackInfo {
             "onShow",
             "onSelected",
             "onCancel"};
-
 }

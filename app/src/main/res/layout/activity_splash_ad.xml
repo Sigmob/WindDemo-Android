@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="com.sigmob.android.demo.SplashAdActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="全屏显示"
-            android:textSize="16dp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -42,22 +41,24 @@
             android:layout_height="wrap_content"
             android:onClick="ButtonClick"
             android:text="只拉取" />
+
         <Button
             android:id="@+id/bt_show_only"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="ButtonClick"
             android:text="展示开屏" />
+
     </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:gravity="center"
         android:text="广告回调信息:"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <ListView
         android:id="@+id/callback_lv"
@@ -66,6 +67,5 @@
         android:layout_margin="10dp"
         android:divider="@color/colorGray"
         android:dividerHeight="1px" />
-
 
 </LinearLayout>
