@@ -28,7 +28,7 @@ public class NativeAdActivity extends Activity {
     private void bindButton(@IdRes int id, final Class<?> clz) {
         findViewById(id).setOnClickListener(v -> {
             Intent intent = new Intent(NativeAdActivity.this, clz)
-                    .putExtra("placementId", placementId);
+                    .putExtra(Constants.CONF_PLACEMENT_ID, placementId);
             startActivity(intent);
         });
     }

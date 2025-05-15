@@ -19,4 +19,6 @@ public class Constants {
     public static String splash_placement_id = "ea1f8f21300";
     public static String native_unified_placement_id = "ed70b4760ff";
     public static String newInterstitial_placement_id = "f51c93b6bf6";
+
+    public static final String CONF_PLACEMENT_ID = "placementId";
 }

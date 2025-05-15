@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.sigmob.android.demo.Constants;
 import com.sigmob.android.demo.R;
 import com.sigmob.android.demo.view.ILoadMoreListener;
 import com.sigmob.android.demo.view.LoadMoreListView;
@@ -59,7 +60,7 @@ public class NativeAdUnifiedListActivity extends Activity {
 
     private void getExtraInfo() {
         Intent intent = getIntent();
-        placementId = intent.getStringExtra("placementId");
+        placementId = intent.getStringExtra(Constants.CONF_PLACEMENT_ID);
     }
 
     public static int screenWidthAsIntDips(Context context) {

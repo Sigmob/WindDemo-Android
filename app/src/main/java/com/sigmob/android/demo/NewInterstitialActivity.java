@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.sigmob.android.demo.callbackinfo.CallBackInfo;
@@ -38,20 +37,17 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
         listView = findViewById(R.id.callback_lv);
         adapter = new ExpandAdapter(this, callBackDataList);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("windSDK", "------onItemClick------" + position);
-                CallBackItem callItem = callBackDataList.get(position);
-                if (callItem != null) {
-                    if (callItem.is_expand()) {
-                        callItem.set_expand(false);
-                    } else {
-                        callItem.set_expand(true);
-                    }
-                    adapter.notifyDataSetChanged();
-                }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Log.d("windSDK", "------onItemClick------" + position);
+            CallBackItem callItem = callBackDataList.get(position);
+            if (callItem == null) return;
+
+            if (callItem.is_expand()) {
+                callItem.set_expand(false);
+            } else {
+                callItem.set_expand(true);
             }
+            adapter.notifyDataSetChanged();
         });
     }
 

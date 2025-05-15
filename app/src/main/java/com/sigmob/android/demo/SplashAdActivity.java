@@ -131,7 +131,7 @@ public class SplashAdActivity extends Activity {
 
         Intent intent = new Intent(this, SplashActivity.class);
         intent.putExtra("isFullScreen", isFullScreen);
-        intent.putExtra("placementId", placementId);
+        intent.putExtra(Constants.CONF_PLACEMENT_ID, placementId);
         intent.putExtra("need_start_main_activity", false);
         switch (view.getId()) {
             case R.id.bt_load_show:

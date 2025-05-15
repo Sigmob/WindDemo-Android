@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import com.sigmob.android.demo.Constants;
 import com.sigmob.android.demo.R;
 import com.sigmob.android.demo.callbackinfo.CallBackInfo;
 import com.sigmob.android.demo.callbackinfo.CallBackItem;
@@ -67,7 +68,7 @@ public class NativeAdUnifiedActivity extends Activity {
 
     private void getExtraInfo() {
         Intent intent = getIntent();
-        placementId = intent.getStringExtra("placementId");
+        placementId = intent.getStringExtra(Constants.CONF_PLACEMENT_ID);
     }
 
     @Override

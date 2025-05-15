@@ -21,8 +21,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sigmob.android.demo.Constants;
 import com.sigmob.android.demo.R;
-import com.sigmob.android.demo.view.ILoadMoreListener;
 import com.sigmob.android.demo.view.LoadMoreRecyclerView;
 import com.sigmob.android.demo.view.LoadMoreView;
 import com.sigmob.windad.WindAdError;
@@ -63,12 +63,13 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         setContentView(R.layout.activity_native_ad_unified_recycle);
         getExtraInfo();
         initListView();
-        adWidth = screenWidthAsIntDips(this) - 20;//减20因为容器有个margin 10dp//340
+        // 减 20 因为容器有个 margin 10dp//340
+        adWidth = screenWidthAsIntDips(this) - 20;
     }
 
     private void getExtraInfo() {
         Intent intent = getIntent();
-        placementId = intent.getStringExtra("placementId");
+        placementId = intent.getStringExtra(Constants.CONF_PLACEMENT_ID);
     }
 
     public static int screenWidthAsIntDips(Context context) {
@@ -83,12 +84,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         mData = new ArrayList<>();
         myAdapter = new MyAdapter(this, mData);
         mListView.setAdapter(myAdapter);
-        mListView.setLoadMoreListener(new ILoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                loadListAd();
-            }
-        });
+        mListView.setLoadMoreListener(this::loadListAd);
 
         mHandler.postDelayed(this::loadListAd, 500);
     }
@@ -110,7 +106,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
             @Override
             public void onAdError(WindAdError error, String placementId) {
                 Log.d("windSDK", "onAdError:" + error.toString() + ":" + placementId);
-                Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdError" + error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdError" + error, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -158,9 +154,9 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         private static final int ITEM_VIEW_TYPE_NORMAL = 0;
         private static final int ITEM_VIEW_TYPE_AD = 1;
 
-        private List<WindNativeAdData> mData;
+        private final List<WindNativeAdData> mData;
 
-        private Activity mActivity;
+        private final Activity mActivity;
 
         public MyAdapter(Activity activity, List<WindNativeAdData> data) {
             this.mActivity = activity;

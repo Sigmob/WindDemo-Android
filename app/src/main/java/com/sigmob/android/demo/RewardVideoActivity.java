@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 
 import com.sigmob.android.demo.callbackinfo.CallBackInfo;
 import com.sigmob.android.demo.callbackinfo.CallBackItem;
@@ -27,35 +24,30 @@ import java.util.Map;
 
 public class RewardVideoActivity extends Activity {
 
-    private Spinner spinner;
-    private ArrayAdapter<String> arrayAdapter;
     private WindRewardVideoAd windRewardedVideoAd;
     private String placementId;
     private String userID = "123456789";
 
     private ListView listView;
     private ExpandAdapter adapter;
-    private List<CallBackItem> callBackDataList = new ArrayList<>();
+    private final List<CallBackItem> callBackDataList = new ArrayList<>();
 
     private void initCallBack() {
         resetCallBackData();
         listView = findViewById(R.id.callback_lv);
         adapter = new ExpandAdapter(this, callBackDataList);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("windSDK", "------onItemClick------" + position);
-                CallBackItem callItem = callBackDataList.get(position);
-                if (callItem != null) {
-                    if (callItem.is_expand()) {
-                        callItem.set_expand(false);
-                    } else {
-                        callItem.set_expand(true);
-                    }
-                    adapter.notifyDataSetChanged();
-                }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Log.d("windSDK", "------onItemClick------" + position);
+            CallBackItem callItem = callBackDataList.get(position);
+            if (callItem == null) return;
+
+            if (callItem.is_expand()) {
+                callItem.set_expand(false);
+            } else {
+                callItem.set_expand(true);
             }
+            adapter.notifyDataSetChanged();
         });
     }
 
