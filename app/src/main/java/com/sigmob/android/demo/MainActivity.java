@@ -28,6 +28,7 @@ import com.sigmob.windad.WindCustomController;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public boolean isCanUseAndroidId() {
-                return true;
+                return false;
             }
 
             /**
@@ -206,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public List<PackageInfo> getInstallPackageInfoList() {
-                Context applicationContext = getApplicationContext();
-                List<PackageInfo> result = MainActivity.this.getInstallPackageInfoList(applicationContext);
-                Log.d(TAG, "getInstallPackageInfoList: result = " + result);
-                return result;
+                //Context applicationContext = getApplicationContext();
+                //List<PackageInfo> result = MainActivity.this.getInstallPackageInfoList(applicationContext);
+                //Log.d(TAG, "getInstallPackageInfoList: result = " + result);
+                return new ArrayList<>();
             }
 
             /**
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public boolean isCanUseSimOperator() {
-                return true;
+                return false;
             }
 
             /**
