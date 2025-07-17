@@ -1,6 +1,7 @@
 package com.sigmob.android.demo.natives;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class NativeAdDemoRender {
     /**
      * 多布局根据adPatternType复用不同的根视图
      */
-    private Map<Integer, View> developViewMap = new HashMap<>();
+    private final Map<Integer, View> developViewMap = new HashMap<>();
     private ImageView img_logo;
     private ImageView ad_logo;
     private ImageView img_dislike;
@@ -91,53 +92,56 @@ public class NativeAdDemoRender {
         text_title = nativeAdView.findViewById(R.id.text_title);
         mCTAButton = nativeAdView.findViewById(R.id.btn_cta);
 
-        //渲染UI
-        if (!TextUtils.isEmpty(adData.getIconUrl())) {
-            img_logo.setVisibility(View.VISIBLE);
-            Glide.with(context).load(adData.getIconUrl()).into(img_logo);
-        } else {
+        // 渲染 UI
+        String iconUrl = adData.getIconUrl();
+        if (TextUtils.isEmpty(iconUrl)) {
             img_logo.setVisibility(View.GONE);
+        } else {
+            img_logo.setVisibility(View.VISIBLE);
+            Glide.with(context).load(iconUrl).into(img_logo);
         }
 
-        if (!TextUtils.isEmpty(adData.getTitle())) {
-            text_title.setText(adData.getTitle());
-        } else {
+        String title = adData.getTitle();
+        if (TextUtils.isEmpty(title)) {
             text_title.setText("点开有惊喜");
+        } else {
+            text_title.setText(title);
         }
 
-        if (!TextUtils.isEmpty(adData.getDesc())) {
-            text_desc.setText(adData.getDesc());
-        } else {
+        String desc = adData.getDesc();
+        if (TextUtils.isEmpty(desc)) {
             text_desc.setText("听说点开它的人都交了好运!");
-        }
-
-        if (adData.getAdLogo() != null) {
-            ad_logo.setVisibility(View.VISIBLE);
-            ad_logo.setImageBitmap(adData.getAdLogo());
         } else {
-            ad_logo.setVisibility(View.GONE);
+            text_desc.setText(desc);
         }
 
-        //clickViews数量必须大于等于1
+        Bitmap adLogo = adData.getAdLogo();
+        if (adLogo == null) {
+            ad_logo.setVisibility(View.GONE);
+        } else {
+            ad_logo.setVisibility(View.VISIBLE);
+            ad_logo.setImageBitmap(adLogo);
+        }
+
+        // clickViews 数量必须大于等于 1
         List<View> clickableViews = new ArrayList<>();
-        //可以被点击的view, 也可以把convertView放进来意味item可被点击
+        // 可以被点击的 view，也可以把 convertView 放进来意味 item 可被点击
         clickableViews.add(nativeAdView);
         ////触发创意广告的view（点击下载或拨打电话）
         List<View> creativeViewList = new ArrayList<>();
-        // 所有广告类型，注册mDownloadButton的点击事件
+        // 所有广告类型，注册 DownloadButton 的点击事件
         creativeViewList.add(mCTAButton);
-//        clickableViews.add(mDownloadButton);
+        //clickableViews.add(mDownloadButton);
 
         List<ImageView> imageViews = new ArrayList<>();
         int patternType = adData.getAdPatternType();
         Log.d("windSDK", "patternType:" + patternType);
 
-
-        //重要! 这个涉及到广告计费，必须正确调用。convertView必须使用ViewGroup。
-        //作为creativeViewList传入，点击不进入详情页，直接下载或进入落地页，视频和图文广告均生效
+        // 重要！这个涉及到广告计费，必须正确调用。convertView 必须使用 ViewGroup
+        // 作为 creativeViewList 传入，点击不进入详情页，直接下载或进入落地页，视频和图文广告均生效
         adData.bindViewForInteraction(nativeAdView, clickableViews, creativeViewList, img_dislike, nativeADEventListener);
 
-        //需要等到bindViewForInteraction后再去添加media
+        // 需要等到 bindViewForInteraction 后再去添加 media
         if (patternType == NativeAdPatternType.NATIVE_BIG_IMAGE_AD) {
             // 双图双文、单图双文：注册mImagePoster的点击事件
             mImagePoster.setVisibility(View.VISIBLE);
@@ -148,12 +152,11 @@ public class NativeAdDemoRender {
             imageViews.add(mImagePoster);
             adData.bindImageViews(imageViews, 0);
         } else if (patternType == NativeAdPatternType.NATIVE_VIDEO_AD) {
-            // 视频广告，注册mMediaView的点击事件
+            // 视频广告，注册 MediaView 的点击事件
             mImagePoster.setVisibility(View.GONE);
             native_3img_ad_container.setVisibility(View.GONE);
             mMediaViewLayout.setVisibility(View.VISIBLE);
             adData.bindMediaView(mMediaViewLayout, nativeADMediaListener);
-
             mButtonsContainer.setVisibility(View.VISIBLE);
 
             View.OnClickListener listener = v -> {
@@ -173,10 +176,10 @@ public class NativeAdDemoRender {
         /**
          * 营销组件
          * 支持项目：智能电话（点击跳转拨号盘），外显表单
-         *  bindCTAViews 绑定营销组件监听视图，注意：bindCTAViews的视图不可调用setOnClickListener，否则SDK功能可能受到影响
-         *  ad.getCTAText 判断拉取广告是否包含营销组件，如果包含组件，展示组件按钮，否则展示download按钮
+         * bindCTAViews 绑定营销组件监听视图，注意：bindCTAViews 的视图不可调用 setOnClickListener，否则 SDK 功能可能受到影响
+         * ad.getCTAText 判断拉取广告是否包含营销组件，如果包含组件，展示组件按钮，否则展示 download 按钮
          */
-        String ctaText = adData.getCTAText(); //获取组件文案
+        String ctaText = adData.getCTAText(); // 获取组件文案
         Log.d("windSDK", "ctaText:" + ctaText);
         updateAdAction(ctaText);
 

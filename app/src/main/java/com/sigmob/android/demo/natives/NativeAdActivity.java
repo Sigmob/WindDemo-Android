@@ -25,7 +25,7 @@ public class NativeAdActivity extends Activity {
         bindButton(R.id.unified_native_ad_recycle_button, NativeAdUnifiedRecycleActivity.class);
     }
 
-    private void bindButton(@IdRes int id, final Class<?> clz) {
+    private void bindButton(@IdRes int id, Class<?> clz) {
         findViewById(id).setOnClickListener(v -> {
             Intent intent = new Intent(NativeAdActivity.this, clz)
                     .putExtra(Constants.CONF_PLACEMENT_ID, placementId);

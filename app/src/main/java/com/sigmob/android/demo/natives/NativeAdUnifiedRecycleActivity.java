@@ -118,7 +118,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                 Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdLoad", Toast.LENGTH_SHORT).show();
                 if (list != null && !list.isEmpty()) {
                     Log.d("windSDK", "onFeedAdLoad:" + list.size());
-                    for ( WindNativeAdData adData : list) {
+                    for (WindNativeAdData adData : list) {
                         for (int i = 0; i < LIST_ITEM_COUNT; i++) {
                             mData.add(null);
                         }
@@ -180,7 +180,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof AdViewHolder) {
-                final AdViewHolder adViewHolder = (AdViewHolder) holder;
+                AdViewHolder adViewHolder = (AdViewHolder) holder;
                 bindData(adViewHolder, mData.get(position));
             } else if (holder instanceof NormalViewHolder) {
                 NormalViewHolder normalViewHolder = (NormalViewHolder) holder;
@@ -200,7 +200,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
             return Color.argb(a, r, g, b);
         }
 
-        private void bindData(final AdViewHolder adViewHolder, final WindNativeAdData adData) {
+        private void bindData(AdViewHolder adViewHolder, WindNativeAdData adData) {
             View nativeAdView = adViewHolder.adRender.getNativeAdView(mActivity, adData, new NativeADEventListener() {
                 @Override
                 public void onAdExposed() {

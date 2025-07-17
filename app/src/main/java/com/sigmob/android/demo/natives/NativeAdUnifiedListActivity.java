@@ -73,12 +73,7 @@ public class NativeAdUnifiedListActivity extends Activity {
         mListView = findViewById(R.id.unified_native_ad_list);
         myAdapter = new MyAdapter(this, mData);
         mListView.setAdapter(myAdapter);
-        mListView.setLoadMoreListener(new ILoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                loadListAd();
-            }
-        });
+        mListView.setLoadMoreListener(this::loadListAd);
 
         mHandler.postDelayed(this::loadListAd, 500);
     }
@@ -148,12 +143,12 @@ public class NativeAdUnifiedListActivity extends Activity {
         private static final int ITEM_VIEW_TYPE_NORMAL = 0;
         private static final int ITEM_VIEW_TYPE_UNIFIED_AD = 1;
         private static final int ITEM_VIEW_TYPE_EXPRESS_AD = 2;
-        private List<WindNativeAdData> mData;
-        private Activity mActivity;
+        private final List<WindNativeAdData> mData;
+        private final Activity mActivity;
 
         public MyAdapter(Activity activity, List<WindNativeAdData> data) {
-            this.mActivity = activity;
-            this.mData = data;
+            mActivity = activity;
+            mData = data;
         }
 
         @Override
@@ -214,25 +209,25 @@ public class NativeAdUnifiedListActivity extends Activity {
                     @Override
                     public void onAdExposed() {
                         Toast.makeText(mActivity, "onAdExposed:", Toast.LENGTH_SHORT).show();
-                        Log.d("windSDK", "onAdExposed: ");
+                        Log.d("windSDK", "onAdExposed");
                     }
 
                     @Override
                     public void onAdClicked() {
                         Toast.makeText(mActivity, "onAdClicked:", Toast.LENGTH_SHORT).show();
-                        Log.d("windSDK", "onAdClicked: ");
+                        Log.d("windSDK", "onAdClicked");
                     }
 
                     @Override
                     public void onAdDetailShow() {
                         Toast.makeText(mActivity, "onAdDetailShow:", Toast.LENGTH_SHORT).show();
-                        Log.d("windSDK", "onAdDetailShow: ");
+                        Log.d("windSDK", "onAdDetailShow");
                     }
 
                     @Override
                     public void onAdDetailDismiss() {
                         Toast.makeText(mActivity, "onAdDetailDismiss:", Toast.LENGTH_SHORT).show();
-                        Log.d("windSDK", "onAdDetailDismiss: ");
+                        Log.d("windSDK", "onAdDetailDismiss");
                     }
 
                     @Override
