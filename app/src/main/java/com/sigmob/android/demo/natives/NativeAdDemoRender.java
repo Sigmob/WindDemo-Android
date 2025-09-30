@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -49,27 +50,27 @@ public class NativeAdDemoRender {
     private Button mCTAButton;
 
 
-    public View getNativeAdView(Context context, final WindNativeAdData adData,
-                                final NativeADEventListener nativeADEventListener,
-                                final WindNativeAdData.NativeADMediaListener nativeADMediaListener) {
-
-
+    public View getNativeAdView(Context context, WindNativeAdData adData,
+                                NativeADEventListener nativeADEventListener,
+                                WindNativeAdData.NativeADMediaListener nativeADMediaListener) {
         int adPatternType = adData.getAdPatternType();
-
-        Log.d("windSDK", "---------createView----------" + adPatternType);
-        View nativeAdView = developViewMap.get(adPatternType);
-        if (nativeAdView == null) {
+        Log.d("windSDK", "getNativeAdView: adPatternType = " + adPatternType);
+        View view = developViewMap.get(adPatternType);
+        View nativeAdView;
+        if (view == null) {
             nativeAdView = LayoutInflater.from(context).inflate(R.layout.native_ad_item_normal, null);
             developViewMap.put(adPatternType, nativeAdView);
-
+        } else {
+            nativeAdView = view;
         }
 
-        if (nativeAdView.getParent() != null) {
-            ((ViewGroup) nativeAdView.getParent()).removeView(nativeAdView);
+        ViewParent parent = nativeAdView.getParent();
+        if (parent != null) {
+            ((ViewGroup) parent).removeView(nativeAdView);
         }
 
-
-        Log.d("windSDK", "renderAdView:" + adData.getTitle());
+        String title = adData.getTitle();
+        Log.d("windSDK", "getNativeAdView: title = " + title);
         img_logo = nativeAdView.findViewById(R.id.img_logo);
         ad_logo = nativeAdView.findViewById(R.id.channel_ad_logo);
         img_dislike = nativeAdView.findViewById(R.id.iv_dislike);
@@ -101,7 +102,6 @@ public class NativeAdDemoRender {
             Glide.with(context).load(iconUrl).into(img_logo);
         }
 
-        String title = adData.getTitle();
         if (TextUtils.isEmpty(title)) {
             text_title.setText("点开有惊喜");
         } else {
@@ -125,17 +125,19 @@ public class NativeAdDemoRender {
 
         // clickViews 数量必须大于等于 1
         List<View> clickableViews = new ArrayList<>();
-        // 可以被点击的 view，也可以把 convertView 放进来意味 item 可被点击
-        clickableViews.add(nativeAdView);
-        ////触发创意广告的view（点击下载或拨打电话）
+        // 可以被点击的 View，也可以把 convertView 放进来意味 item 可被点击
+        // 全区域可点
+        //clickableViews.add(nativeAdView);
+        // 仅按键可点
+        clickableViews.add(mCTAButton);
+        // 触发创意广告的 View（点击下载或拨打电话）
         List<View> creativeViewList = new ArrayList<>();
         // 所有广告类型，注册 DownloadButton 的点击事件
         creativeViewList.add(mCTAButton);
-        //clickableViews.add(mDownloadButton);
 
         List<ImageView> imageViews = new ArrayList<>();
         int patternType = adData.getAdPatternType();
-        Log.d("windSDK", "patternType:" + patternType);
+        Log.d("windSDK", "getNativeAdView: patternType = " + patternType);
 
         // 重要！这个涉及到广告计费，必须正确调用。convertView 必须使用 ViewGroup
         // 作为 creativeViewList 传入，点击不进入详情页，直接下载或进入落地页，视频和图文广告均生效
@@ -143,7 +145,7 @@ public class NativeAdDemoRender {
 
         // 需要等到 bindViewForInteraction 后再去添加 media
         if (patternType == NativeAdPatternType.NATIVE_BIG_IMAGE_AD) {
-            // 双图双文、单图双文：注册mImagePoster的点击事件
+            // 双图双文、单图双文：注册 mImagePoster 的点击事件
             mImagePoster.setVisibility(View.VISIBLE);
             mButtonsContainer.setVisibility(View.GONE);
             native_3img_ad_container.setVisibility(View.GONE);
@@ -179,10 +181,10 @@ public class NativeAdDemoRender {
          * bindCTAViews 绑定营销组件监听视图，注意：bindCTAViews 的视图不可调用 setOnClickListener，否则 SDK 功能可能受到影响
          * ad.getCTAText 判断拉取广告是否包含营销组件，如果包含组件，展示组件按钮，否则展示 download 按钮
          */
-        String ctaText = adData.getCTAText(); // 获取组件文案
-        Log.d("windSDK", "ctaText:" + ctaText);
+        // 获取组件文案
+        String ctaText = adData.getCTAText();
+        Log.d("windSDK", "getNativeAdView: ctaText = " + ctaText);
         updateAdAction(ctaText);
-
         return nativeAdView;
     }
 
