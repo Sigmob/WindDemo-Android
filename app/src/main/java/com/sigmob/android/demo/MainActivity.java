@@ -1,5 +1,6 @@
 package com.sigmob.android.demo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -11,10 +12,8 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Toast;
-
-import androidx.annotation.IdRes;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.sigmob.android.demo.natives.NativeAdActivity;
 import com.sigmob.windad.OnInitializationListener;
@@ -31,7 +30,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private static final String TAG = "MainActivity";
     boolean doubleBackToExitPressedOnce = false;
@@ -48,11 +47,15 @@ public class MainActivity extends AppCompatActivity {
         bindButton(R.id.bt_splash, SplashAdActivity.class);
         bindButton(R.id.bt_native, NativeAdActivity.class);
         bindButton(R.id.bt_new_interstitial, NewInterstitialActivity.class);
+        bindButton(R.id.bt_device, DeviceActivity.class);
     }
 
-    private void bindButton(@IdRes int id, Class<?> clz) {
-        findViewById(id).setOnClickListener(v -> {
-            if (WindAds.sharedAds().isInit()) {
+    private void bindButton(int id, Class<?> clz) {
+        View viewById = findViewById(id);
+        if (viewById == null) return;
+
+        viewById.setOnClickListener(v -> {
+            if (WindAds.sharedAds().isInit() || id == R.id.bt_device) {
                 Intent intent = new Intent(MainActivity.this, clz);
                 startActivity(intent);
             } else {
@@ -319,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        this.doubleBackToExitPressedOnce = true;
+        doubleBackToExitPressedOnce = true;
 
         try {
             Toast.makeText(this, "再按一次退出应用", Toast.LENGTH_SHORT).show();
