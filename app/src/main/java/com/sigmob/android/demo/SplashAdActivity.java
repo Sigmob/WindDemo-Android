@@ -160,9 +160,9 @@ public class SplashAdActivity extends Activity {
             CallBackItem callItem = callBackDataList.get(i);
             if (callItem.getText().equals(call)) {
                 callItem.set_callback(true);
-                if (!TextUtils.isEmpty(child)) {
-                    callItem.setChild_text(child);
-                }
+                if (TextUtils.isEmpty(child)) continue;
+
+                callItem.setChild_text(child);
                 break;
             }
         }
@@ -177,7 +177,9 @@ public class SplashAdActivity extends Activity {
         if (data == null) return;
 
         HashMap<String, String> result = (HashMap<String, String>) data.getExtras().getSerializable("result");
-        Log.d("windSDK", "------onActivityResult------" + resultCode + ":" + resultCode + ":" + result.size());
+        Log.d("windSDK", "------onActivityResult------" + resultCode + ":" + resultCode + ":" + (result == null ? 0 : result.size()));
+        if (result == null) return;
+
         for (Map.Entry<String, String> entry : result.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();

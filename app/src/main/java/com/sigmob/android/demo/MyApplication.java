@@ -13,7 +13,6 @@ public class MyApplication extends Application {
         super.onCreate();
     }
 
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
