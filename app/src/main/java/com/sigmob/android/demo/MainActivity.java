@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
         if (viewById == null) return;
 
         viewById.setOnClickListener(v -> {
-            if (WindAds.sharedAds().isInit() || id == R.id.bt_device) {
+            if (WindAds.sharedAds().isInit()) {
                 Intent intent = new Intent(MainActivity.this, clz);
                 startActivity(intent);
             } else {
