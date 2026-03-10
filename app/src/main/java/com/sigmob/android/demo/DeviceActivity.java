@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
@@ -175,7 +176,7 @@ public class DeviceActivity extends Activity {
                 return "以太网";
             }
         } else {
-            android.net.NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
+            NetworkInfo activeNetworkInfo = cm.getActiveNetworkInfo();
             if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
                 int type = activeNetworkInfo.getType();
                 if (type == ConnectivityManager.TYPE_WIFI) {

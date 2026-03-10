@@ -3,6 +3,7 @@ package com.sigmob.android.demo.natives;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.IdRes;
 
@@ -26,7 +27,10 @@ public class NativeAdActivity extends Activity {
     }
 
     private void bindButton(@IdRes int id, Class<?> clz) {
-        findViewById(id).setOnClickListener(v -> {
+        View view = findViewById(id);
+        if (view == null) return;
+
+        view.setOnClickListener(v -> {
             Intent intent = new Intent(NativeAdActivity.this, clz)
                     .putExtra(Constants.CONF_PLACEMENT_ID, placementId);
             startActivity(intent);

@@ -16,11 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.sigmob.android.demo.Constants;
 import com.sigmob.android.demo.R;
-import com.sigmob.android.demo.view.ILoadMoreListener;
 import com.sigmob.android.demo.view.LoadMoreListView;
 import com.sigmob.windad.WindAdError;
 import com.sigmob.windad.natives.NativeADEventListener;
@@ -194,8 +191,8 @@ public class NativeAdUnifiedListActivity extends Activity {
         }
 
         // 渲染视频广告，以视频广告为例，以下说明
-        private View getUnifiedADView(View convertView, ViewGroup viewGroup, @NonNull final WindNativeAdData ad) {
-            final UnifiedAdViewHolder adViewHolder;
+        private View getUnifiedADView(View convertView, ViewGroup viewGroup, WindNativeAdData ad) {
+            UnifiedAdViewHolder adViewHolder;
             try {
                 if (convertView == null) {
                     convertView = LayoutInflater.from(mActivity).inflate(R.layout.listitem_ad_native, viewGroup, false);
@@ -326,21 +323,15 @@ public class NativeAdUnifiedListActivity extends Activity {
         }
 
         /**
-         * 非广告list
-         *
-         * @param convertView
-         * @param parent
-         * @param position
-         * @return
+         * 非广告 list
          */
-        @SuppressWarnings("RedundantCast")
         @SuppressLint("SetTextI18n")
         private View getNormalView(View convertView, ViewGroup parent, int position) {
             NormalViewHolder normalViewHolder;
             if (convertView == null) {
                 normalViewHolder = new NormalViewHolder();
                 convertView = LayoutInflater.from(mActivity).inflate(R.layout.listitem_normal, parent, false);
-                normalViewHolder.idle = (TextView) convertView.findViewById(R.id.text_idle);
+                normalViewHolder.idle = convertView.findViewById(R.id.text_idle);
                 convertView.setTag(normalViewHolder);
             } else {
                 normalViewHolder = (NormalViewHolder) convertView.getTag();

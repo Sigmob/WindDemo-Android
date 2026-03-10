@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.sigmob.android.demo.natives.NativeAdUnifiedListActivity">
+    tools:context=".natives.NativeAdUnifiedListActivity">
 
     <com.sigmob.android.demo.view.LoadMoreListView
         android:id="@+id/unified_native_ad_list"

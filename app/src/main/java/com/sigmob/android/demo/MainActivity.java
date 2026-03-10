@@ -309,7 +309,6 @@ public class MainActivity extends Activity {
         super.onResume();
     }
 
-    //调用菜单
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return true;

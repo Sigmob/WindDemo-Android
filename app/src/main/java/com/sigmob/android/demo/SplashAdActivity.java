@@ -40,20 +40,17 @@ public class SplashAdActivity extends Activity {
         listView = findViewById(R.id.callback_lv);
         adapter = new ExpandAdapter(this, callBackDataList);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("windSDK", "------onItemClick------" + position);
-                CallBackItem callItem = callBackDataList.get(position);
-                if (callItem == null) return;
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Log.d("windSDK", "------onItemClick------" + position);
+            CallBackItem callItem = callBackDataList.get(position);
+            if (callItem == null) return;
 
-                if (callItem.is_expand()) {
-                    callItem.set_expand(false);
-                } else {
-                    callItem.set_expand(true);
-                }
-                adapter.notifyDataSetChanged();
+            if (callItem.is_expand()) {
+                callItem.set_expand(false);
+            } else {
+                callItem.set_expand(true);
             }
+            adapter.notifyDataSetChanged();
         });
     }
 

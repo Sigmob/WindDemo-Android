@@ -6,7 +6,7 @@
     android:background="@android:color/white"
     android:orientation="vertical"
     android:scrollbars="none"
-    tools:context="com.sigmob.android.demo.natives.NativeAdUnifiedActivity">
+    tools:context=".natives.NativeAdUnifiedActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="15dp"
             android:gravity="center"
-            android:text="广告回调信息:"
+            android:text="广告回调信息："
             android:textSize="16sp" />
 
         <com.sigmob.android.demo.callbackinfo.MyListView

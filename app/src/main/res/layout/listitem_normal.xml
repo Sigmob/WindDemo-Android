@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="HardcodedText"
     android:layout_height="40dp">
 
     <TextView
@@ -11,6 +9,6 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="普通的 View" />
+        android:text="普通 View" />
 
 </RelativeLayout>

@@ -37,12 +37,10 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
 
     private void initLoadMoreView(Context context) {
         setFooterDividersEnabled(true);
-
         LoadMoreView mLoadMoreView = new LoadMoreView(context);
         addFooterView(mLoadMoreView);
     }
 
-    @SuppressWarnings("unused")
     public ILoadMoreListener getLoadMoreListener() {
         return mLoadMoreListener;
     }
@@ -72,10 +70,10 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
         }
 
         if (mLastVisibleItem == mTotalItemCount && scrollState == SCROLL_STATE_IDLE) {
-            if (mLoadMoreListener != null && !isLoading) {
-                isLoading = true;
-                mLoadMoreListener.onLoadMore();
-            }
+            if (mLoadMoreListener == null || isLoading) return;
+
+            isLoading = true;
+            mLoadMoreListener.onLoadMore();
         }
     }
 

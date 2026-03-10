@@ -49,7 +49,6 @@ public class NativeAdDemoRender {
     private TextView text_title;
     private Button mCTAButton;
 
-
     public View getNativeAdView(Context context, WindNativeAdData adData,
                                 NativeADEventListener nativeADEventListener,
                                 WindNativeAdData.NativeADMediaListener nativeADMediaListener) {
@@ -110,7 +109,7 @@ public class NativeAdDemoRender {
 
         String desc = adData.getDesc();
         if (TextUtils.isEmpty(desc)) {
-            text_desc.setText("听说点开它的人都交了好运!");
+            text_desc.setText("听说点开它的人都交了好运");
         } else {
             text_desc.setText(desc);
         }

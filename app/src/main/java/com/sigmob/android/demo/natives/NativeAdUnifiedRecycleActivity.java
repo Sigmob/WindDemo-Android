@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -163,9 +162,8 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
             this.mData = data;
         }
 
-        @NonNull
         @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType) {
                 case ITEM_VIEW_TYPE_LOAD_MORE:
                     return new LoadMoreViewHolder(new LoadMoreView(mActivity));
@@ -178,7 +176,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
 
         @SuppressLint("SetTextI18n")
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof AdViewHolder) {
                 AdViewHolder adViewHolder = (AdViewHolder) holder;
                 bindData(adViewHolder, mData.get(position));

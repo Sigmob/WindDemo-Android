@@ -32,7 +32,6 @@
                 android:layout_toLeftOf="@+id/img_poster"
                 android:orientation="vertical">
 
-
                 <!-- 原生广告的描述 -->
                 <TextView
                     android:id="@+id/text_desc"
@@ -51,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <!-- 原生广告的logo -->
+                    <!-- 原生广告的 Logo -->
                     <ImageView
                         android:id="@+id/img_logo"
                         android:layout_width="30dp"
@@ -62,7 +61,7 @@
                         android:layout_marginRight="10dp"
                         android:src="@mipmap/ic_launcher" />
 
-                    <!-- disLick的小图 -->
+                    <!-- dislike 的小图 -->
                     <ImageView
                         android:id="@+id/iv_dislike"
                         android:layout_width="20dp"
@@ -76,12 +75,9 @@
                         android:src="@drawable/tt_dislike" />
                 </RelativeLayout>
 
-
             </LinearLayout>
 
-
         </RelativeLayout>
-
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -108,7 +104,7 @@
                 android:layout_toRightOf="@+id/channel_ad_logo"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="计策略，才真三国！"
+                android:text="计策略，才真三国"
                 android:textSize="18sp" />
 
             <!-- 原生广告的点击按钮 -->

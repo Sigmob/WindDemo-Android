@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#17A0DD">
+
             <!-- 原生广告的小图 -->
             <ImageView
                 android:id="@+id/img_logo"
@@ -56,7 +57,7 @@
                 android:textColor="#a0000000"
                 android:textSize="14sp" />
 
-            <!-- disLick的小图 -->
+            <!-- dislike 小图 -->
             <ImageView
                 android:id="@+id/iv_dislike"
                 android:layout_width="30dp"
@@ -129,12 +130,11 @@
                 android:id="@+id/img_poster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
                 android:layout_gravity="center_horizontal"
-                android:minHeight="200dp"
+                android:adjustViewBounds="true"
                 android:maxHeight="400dp"
+                android:minHeight="200dp"
                 android:scaleType="fitXY" />
-
 
             <!-- 原生三小图 -->
             <LinearLayout
