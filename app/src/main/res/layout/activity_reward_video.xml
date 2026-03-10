@@ -18,14 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="ButtonClick"
-            android:text="Load广告" />
+            android:text="加载广告" />
 
         <Button
             android:id="@+id/bt_show_ad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="ButtonClick"
-            android:text="观看广告" />
+            android:text="展示广告" />
 
     </LinearLayout>
 
