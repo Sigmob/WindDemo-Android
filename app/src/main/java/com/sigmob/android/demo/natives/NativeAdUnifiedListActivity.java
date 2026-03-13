@@ -42,8 +42,8 @@ public class NativeAdUnifiedListActivity extends Activity {
     private List<WindNativeAdData> mData = new ArrayList<>();
 
     private final Handler mHandler = new Handler(Looper.getMainLooper());
-
-    private int adWidth; // 广告宽高
+    // 广告宽高
+    private int adWidth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

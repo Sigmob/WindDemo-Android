@@ -94,12 +94,6 @@ public class NativeAdUnifiedActivity extends Activity {
         }
     }
 
-    public static int screenWidthAsIntDips(Context context) {
-        int pixels = context.getResources().getDisplayMetrics().widthPixels;
-        float density = context.getResources().getDisplayMetrics().density;
-        return (int) ((pixels / density) + 0.5f);
-    }
-
     private void loadNativeAd() {
         Log.d("windSDK", "-----------loadNativeAd-----------");
 
@@ -134,9 +128,8 @@ public class NativeAdUnifiedActivity extends Activity {
         if (nativeAdDataList == null || nativeAdDataList.isEmpty()) return;
 
         WindNativeAdData nativeADData = nativeAdDataList.get(0);
-        //媒体自渲染的View
+        // 媒体自渲染的 View
         NativeAdDemoRender adRender = new NativeAdDemoRender();
-
         View nativeAdView = adRender.getNativeAdView(this, nativeADData, new NativeADEventListener() {
             @Override
             public void onAdExposed() {

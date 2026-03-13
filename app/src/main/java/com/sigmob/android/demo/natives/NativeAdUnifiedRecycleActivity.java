@@ -1,6 +1,5 @@
 package com.sigmob.android.demo.natives;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -115,19 +114,19 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                 }
 
                 Toast.makeText(NativeAdUnifiedRecycleActivity.this, "onAdLoad", Toast.LENGTH_SHORT).show();
-                if (list != null && !list.isEmpty()) {
-                    Log.d("windSDK", "onFeedAdLoad:" + list.size());
-                    for (WindNativeAdData adData : list) {
-                        for (int i = 0; i < LIST_ITEM_COUNT; i++) {
-                            mData.add(null);
-                        }
+                if (list == null || list.isEmpty()) return;
 
-                        int count = mData.size();
-                        mData.set(count - 1, adData);
+                Log.d("windSDK", "onFeedAdLoad:" + list.size());
+                for (WindNativeAdData adData : list) {
+                    for (int i = 0; i < LIST_ITEM_COUNT; i++) {
+                        mData.add(null);
                     }
 
-                    myAdapter.notifyDataSetChanged();
+                    int count = mData.size();
+                    mData.set(count - 1, adData);
                 }
+
+                myAdapter.notifyDataSetChanged();
             }
         });
         windNativeUnifiedAd.loadAd();
@@ -136,12 +135,12 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mData != null) {
-            for (WindNativeAdData ad : mData) {
-                if (ad != null) {
-                    ad.destroy();
-                }
-            }
+        if (mData == null) return;
+
+        for (WindNativeAdData ad : mData) {
+            if (ad == null) continue;
+
+            ad.destroy();
         }
         mData = null;
     }
@@ -158,8 +157,8 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
         private final Activity mActivity;
 
         public MyAdapter(Activity activity, List<WindNativeAdData> data) {
-            this.mActivity = activity;
-            this.mData = data;
+            mActivity = activity;
+            mData = data;
         }
 
         @Override
@@ -174,7 +173,6 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
             }
         }
 
-        @SuppressLint("SetTextI18n")
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof AdViewHolder) {
@@ -227,7 +225,7 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                 @Override
                 public void onAdError(WindAdError error) {
                     Toast.makeText(mActivity, "onAdError: " + error.toString(), Toast.LENGTH_SHORT).show();
-                    Log.d("windSDK", "onAdError error code :" + error.toString());
+                    Log.d("windSDK", "onAdError error code :" + error);
                 }
             }, new WindNativeAdData.NativeADMediaListener() {
                 @Override
@@ -292,13 +290,14 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
                     Log.d("windSDK", "onAdExposed: ");
                 }
             });
+
+            if (adViewHolder.adContainer == null) return;
+
             // 添加进容器
-            if (adViewHolder.adContainer != null) {
-                adViewHolder.adContainer.removeAllViews();
-                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                adViewHolder.adContainer.addView(nativeAdView, lp);
-            }
+            adViewHolder.adContainer.removeAllViews();
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            adViewHolder.adContainer.addView(nativeAdView, lp);
         }
 
         @Override
@@ -309,20 +308,19 @@ public class NativeAdUnifiedRecycleActivity extends Activity {
 
         @Override
         public int getItemViewType(int position) {
-            if (mData != null) {
-                int count = mData.size();
-                if (position >= count) {
-                    return ITEM_VIEW_TYPE_LOAD_MORE;
-                } else {
-                    WindNativeAdData ad = mData.get(position);
-                    if (ad == null) {
-                        return ITEM_VIEW_TYPE_NORMAL;
-                    } else {
-                        return ITEM_VIEW_TYPE_AD;
-                    }
-                }
+            if (mData == null || mData.isEmpty()) return super.getItemViewType(position);
+
+            int count = mData.size();
+            if (position >= count) {
+                return ITEM_VIEW_TYPE_LOAD_MORE;
             }
-            return super.getItemViewType(position);
+
+            WindNativeAdData ad = mData.get(position);
+            if (ad == null) {
+                return ITEM_VIEW_TYPE_NORMAL;
+            } else {
+                return ITEM_VIEW_TYPE_AD;
+            }
         }
 
         private static class AdViewHolder extends RecyclerView.ViewHolder {

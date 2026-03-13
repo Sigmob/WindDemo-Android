@@ -90,20 +90,6 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (WindNewInterstitialAd != null) {
-            WindNewInterstitialAd.destroy();
-            WindNewInterstitialAd = null;
-        }
-    }
-
-    @Override
     public void onInterstitialAdLoadSuccess(final String placementId) {
         Log.d("windSDK", "------onInterstitialAdLoadSuccess------" + placementId);
         //Toast.makeText(InterstitialActivity.this, "onInterstitialAdLoadSuccess", Toast.LENGTH_SHORT).show();
@@ -175,5 +161,14 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (WindNewInterstitialAd == null) return;
+
+        WindNewInterstitialAd.destroy();
+        WindNewInterstitialAd = null;
     }
 }

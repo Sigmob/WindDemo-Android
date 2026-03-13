@@ -127,20 +127,6 @@ public class RewardVideoActivity extends Activity {
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (windRewardedVideoAd != null) {
-            windRewardedVideoAd.destroy();
-            windRewardedVideoAd = null;
-        }
-    }
-
     public void ButtonClick(View view) {
         switch (view.getId()) {
             case R.id.bt_load_ad:
@@ -186,5 +172,14 @@ public class RewardVideoActivity extends Activity {
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (windRewardedVideoAd == null) return;
+
+        windRewardedVideoAd.destroy();
+        windRewardedVideoAd = null;
     }
 }

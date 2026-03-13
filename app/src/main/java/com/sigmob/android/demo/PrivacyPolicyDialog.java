@@ -50,7 +50,6 @@ public class PrivacyPolicyDialog extends Dialog {
         // 初始化视图
         Button btnReject = findViewById(R.id.btn_reject);
         Button btnAccept = findViewById(R.id.btn_accept);
-
         TextView tvPrivacyLink = findViewById(R.id.tv_privacy_link);
 
         // 设置隐私政策链接点击事件
