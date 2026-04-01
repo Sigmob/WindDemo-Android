@@ -2,6 +2,8 @@ package com.sigmob.android.demo.natives;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -37,9 +40,7 @@ public class NativeAdDemoRender {
     private ImageView img_dislike;
     private TextView text_desc;
     private View mButtonsContainer;
-    private Button mPlayButton;
-    private Button mPauseButton;
-    private Button mStopButton;
+    private Button mPlayButton, mPauseButton, mStopButton, mVoiceButton;
     private FrameLayout mMediaViewLayout;
     private ImageView mImagePoster;
     private LinearLayout native_3img_ad_container;
@@ -48,6 +49,16 @@ public class NativeAdDemoRender {
     private ImageView img_3;
     private TextView text_title;
     private Button mCTAButton;
+    private ViewGroup mvideoProgressContainer;
+    private ProgressBar mVideoProgressBar;
+    private TextView mVideoProgressText;
+
+    private boolean mMute = false;
+
+    // 视频播放进度定时器
+    private final Handler mProgressHandler = new Handler(Looper.getMainLooper());
+    private Runnable mProgressRunnable;
+    private WindNativeAdData mCurrentAdData;
 
     public View getNativeAdView(Context context, WindNativeAdData adData,
                                 NativeADEventListener nativeADEventListener,
@@ -80,9 +91,13 @@ public class NativeAdDemoRender {
         mPlayButton = nativeAdView.findViewById(R.id.btn_play);
         mPauseButton = nativeAdView.findViewById(R.id.btn_pause);
         mStopButton = nativeAdView.findViewById(R.id.btn_stop);
+        mVoiceButton = nativeAdView.findViewById(R.id.btn_voice);
 
         mMediaViewLayout = nativeAdView.findViewById(R.id.media_layout);
         mImagePoster = nativeAdView.findViewById(R.id.img_poster);
+        mvideoProgressContainer = nativeAdView.findViewById(R.id.video_progress_container);
+        mVideoProgressBar = nativeAdView.findViewById(R.id.video_progress_bar);
+        mVideoProgressText = nativeAdView.findViewById(R.id.tv_video_progress_text);
 
         native_3img_ad_container = nativeAdView.findViewById(R.id.native_3img_ad_container);
         img_1 = nativeAdView.findViewById(R.id.img_1);
@@ -147,6 +162,7 @@ public class NativeAdDemoRender {
             // 双图双文、单图双文：注册 mImagePoster 的点击事件
             mImagePoster.setVisibility(View.VISIBLE);
             mButtonsContainer.setVisibility(View.GONE);
+            mvideoProgressContainer.setVisibility(View.GONE);
             native_3img_ad_container.setVisibility(View.GONE);
             mMediaViewLayout.setVisibility(View.GONE);
             clickableViews.add(mImagePoster);
@@ -159,19 +175,38 @@ public class NativeAdDemoRender {
             mMediaViewLayout.setVisibility(View.VISIBLE);
             adData.bindMediaView(mMediaViewLayout, nativeADMediaListener);
             mButtonsContainer.setVisibility(View.VISIBLE);
+            mvideoProgressContainer.setVisibility(View.VISIBLE);
+
+            // 保存当前广告数据，供定时器使用
+            mCurrentAdData = adData;
 
             View.OnClickListener listener = v -> {
                 if (v == mPlayButton) {
                     adData.startVideo();
+                    startProgressTimer();
                 } else if (v == mPauseButton) {
                     adData.pauseVideo();
+                    stopProgressTimer();
                 } else if (v == mStopButton) {
                     adData.stopVideo();
+                    stopProgressTimer();
+                    resetProgressBar();
+                } else if (v == mVoiceButton) {
+                    if (mMute) {
+                        adData.setVideoMute(false);
+                        mVoiceButton.setText("有声");
+                        mMute = false;
+                    } else {
+                        adData.setVideoMute(true);
+                        mVoiceButton.setText("静音");
+                        mMute = true;
+                    }
                 }
             };
             mPlayButton.setOnClickListener(listener);
             mPauseButton.setOnClickListener(listener);
             mStopButton.setOnClickListener(listener);
+            mVoiceButton.setOnClickListener(listener);
         }
 
         /**
@@ -195,5 +230,77 @@ public class NativeAdDemoRender {
             mCTAButton.setText(ctaText);
             mCTAButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    public boolean isMute() {
+        return mMute;
+    }
+
+    /**
+     * 启动播放进度定时器，每隔 500ms 更新一次进度条
+     */
+    public void startProgressTimer() {
+        stopProgressTimer();
+        mProgressRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mCurrentAdData == null) {
+                    stopProgressTimer();
+                    return;
+                }
+                int duration = mCurrentAdData.getVideoDuration();
+                int position = mCurrentAdData.getVideoCurrentPosition();
+                if (duration > 0 && isNotNull(mVideoProgressBar)) {
+                    int progress = (int) ((position * 100L) / duration);
+                    mVideoProgressBar.setProgress(progress);
+                    if (isNotNull(mVideoProgressText)) {
+                        mVideoProgressText.setText(progress + "%");
+                    }
+                    Log.d(TAG, "startProgressTimer: position = " + position + ", duration = " + duration + " progress = " + progress + "%");
+                }
+                // 继续调度下一次更新
+                mProgressHandler.postDelayed(this, 500);
+            }
+        };
+        mProgressHandler.post(mProgressRunnable);
+    }
+
+    /**
+     * 停止播放进度定时器
+     */
+    public void stopProgressTimer() {
+        if (isNotNull(mProgressRunnable)) {
+            mProgressHandler.removeCallbacks(mProgressRunnable);
+            mProgressRunnable = null;
+        }
+    }
+
+    /**
+     * 播放完成时调用：停止定时器并将进度条重置为满格后隐藏
+     */
+    public void onVideoCompleted() {
+        stopProgressTimer();
+        if (isNotNull(mVideoProgressBar)) {
+            mVideoProgressBar.setProgress(100);
+        }
+        if (isNotNull(mVideoProgressText)) {
+            mVideoProgressText.setText("100%");
+        }
+    }
+
+    /**
+     * 重置进度条（停止播放时使用）
+     */
+    private void resetProgressBar() {
+        if (isNotNull(mVideoProgressBar)) {
+            mVideoProgressBar.setProgress(0);
+        }
+        if (isNotNull(mVideoProgressText)) {
+            mVideoProgressText.setText("0%");
+        }
+    }
+
+    private boolean isNotNull(Object obj) {
+        return obj != null;
     }
 }

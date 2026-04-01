@@ -1,14 +1,12 @@
 package com.sigmob.android.demo.natives;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.sigmob.android.demo.Constants;
@@ -36,10 +34,6 @@ public class NativeAdUnifiedActivity extends Activity {
     private String placementId;
     private List<WindNativeAdData> nativeAdDataList;
 
-    // 广告宽高
-    private int adWidth, adHeight;
-    private CheckBox checkBoxFullWidth, checkBoxAutoHeight;
-
     private MyListView listView;
     private ExpandAdapter adapter;
     private final List<CallBackItem> callBackDataList = new ArrayList<>();
@@ -50,7 +44,7 @@ public class NativeAdUnifiedActivity extends Activity {
         adapter = new ExpandAdapter(this, callBackDataList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            Log.d("windSDK", "------onItemClick------" + position);
+            Log.d("windSDK", "onItemClick: position = " + position);
             CallBackItem callItem = callBackDataList.get(position);
             if (callItem == null) return;
 
@@ -95,11 +89,10 @@ public class NativeAdUnifiedActivity extends Activity {
     }
 
     private void loadNativeAd() {
-        Log.d("windSDK", "-----------loadNativeAd-----------");
+        Log.d("windSDK", "loadNativeAd");
 
         userID++;
         Map<String, Object> options = new HashMap<>();
-
         options.put("user_id", String.valueOf(userID));
         if (windNativeAd == null) {
             windNativeAd = new WindNativeUnifiedAd(new WindNativeAdRequest(placementId, String.valueOf(userID), 1, options));
@@ -108,8 +101,8 @@ public class NativeAdUnifiedActivity extends Activity {
         windNativeAd.setNativeAdLoadListener(new WindNativeUnifiedAd.WindNativeAdLoadListener() {
             @Override
             public void onAdError(WindAdError error, String placementId) {
-                Log.d("windSDK", "onAdError:" + error.toString() + ":" + placementId);
-                logCallBack("onError", error.toString());
+                Log.e("windSDK", "onAdError: placementId = " + placementId + ", error = " + error.toString());
+                logCallBack("onAdError", error.toString());
                 Toast.makeText(NativeAdUnifiedActivity.this, "onAdError", Toast.LENGTH_SHORT).show();
             }
 
@@ -124,7 +117,7 @@ public class NativeAdUnifiedActivity extends Activity {
     }
 
     private void showNativeAd() {
-        Log.d("windSDK", "-----------showNativeAd-----------: " + placementId);
+        Log.d("windSDK", "showNativeAd" + placementId);
         if (nativeAdDataList == null || nativeAdDataList.isEmpty()) return;
 
         WindNativeAdData nativeADData = nativeAdDataList.get(0);
@@ -133,62 +126,65 @@ public class NativeAdUnifiedActivity extends Activity {
         View nativeAdView = adRender.getNativeAdView(this, nativeADData, new NativeADEventListener() {
             @Override
             public void onAdExposed() {
-                Log.d("windSDK", "onAdExposed: ");
+                Log.d("windSDK", "onAdExposed");
                 logCallBack("onAdExposed", "");
             }
 
             @Override
             public void onAdClicked() {
-                Log.d("windSDK", "onAdClicked: ");
+                Log.d("windSDK", "onAdClicked");
                 logCallBack("onAdClicked", "");
             }
 
             @Override
             public void onAdDetailShow() {
-                Log.d("windSDK", "onAdDetailShow: ");
+                Log.d("windSDK", "onAdDetailShow");
                 logCallBack("onAdDetailShow", "");
             }
 
             @Override
             public void onAdDetailDismiss() {
-                Log.d("windSDK", "onAdDetailDismiss: ");
+                Log.d("windSDK", "onAdDetailDismiss");
                 logCallBack("onAdDetailDismiss", "");
             }
 
             @Override
             public void onAdError(WindAdError error) {
                 logCallBack("onAdError", error.toString());
-                Log.d("windSDK", "onAdError error code :" + error.toString());
+                Log.e("windSDK", "onAdError: error = " + error);
             }
         }, new WindNativeAdData.NativeADMediaListener() {
             @Override
             public void onVideoLoad() {
-                Log.d("windSDK", "----------onVideoLoad----------");
+                Log.d("windSDK", "onVideoLoad");
             }
 
             @Override
             public void onVideoError(WindAdError error) {
-                Log.d("windSDK", "----------onVideoError----------:" + error.toString());
+                Log.e("windSDK", "onVideoError: error = " + error.toString());
             }
 
             @Override
             public void onVideoStart() {
-                Log.d("windSDK", "----------onVideoStart----------");
+                Log.d("windSDK", "onVideoStart");
+                boolean mute = adRender.isMute();
+                nativeADData.setVideoMute(mute);
+                adRender.startProgressTimer();
             }
 
             @Override
             public void onVideoPause() {
-                Log.d("windSDK", "----------onVideoPause----------");
+                Log.d("windSDK", "onVideoPause");
             }
 
             @Override
             public void onVideoResume() {
-                Log.d("windSDK", "----------onVideoResume----------");
+                Log.d("windSDK", "onVideoResume");
             }
 
             @Override
             public void onVideoCompleted() {
-                Log.d("windSDK", "----------onVideoCompleted----------");
+                Log.d("windSDK", "onVideoCompleted");
             }
         });
         // 设置 Dislike 弹窗
@@ -202,10 +198,9 @@ public class NativeAdUnifiedActivity extends Activity {
             @Override
             public void onSelected(int position, String value, boolean enforce) {
                 logCallBack("onSelected", "");
-                Log.d("windSDK", "onSelected: " + position + ":" + value + ":" + enforce);
-                if (adContainer != null) {
-                    adContainer.removeAllViews();
-                }
+                Log.d("windSDK", "onSelected: position = " + position + ", value = " + value + ", enforce = " + enforce);
+                if (adContainer == null) return;
+                adContainer.removeAllViews();
             }
 
             @Override
@@ -218,10 +213,9 @@ public class NativeAdUnifiedActivity extends Activity {
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         // 媒体最终将要展示广告的容器
-        if (adContainer != null) {
-            adContainer.removeAllViews();
-            adContainer.addView(nativeAdView, lp);
-        }
+        if (adContainer == null) return;
+        adContainer.removeAllViews();
+        adContainer.addView(nativeAdView, lp);
     }
 
     @Override
