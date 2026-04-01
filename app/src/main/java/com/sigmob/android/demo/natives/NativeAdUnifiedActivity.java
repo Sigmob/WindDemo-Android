@@ -175,16 +175,19 @@ public class NativeAdUnifiedActivity extends Activity {
             @Override
             public void onVideoPause() {
                 Log.d("windSDK", "onVideoPause");
+                adRender.stopProgressTimer();
             }
 
             @Override
             public void onVideoResume() {
                 Log.d("windSDK", "onVideoResume");
+                adRender.startProgressTimer();
             }
 
             @Override
             public void onVideoCompleted() {
                 Log.d("windSDK", "onVideoCompleted");
+                adRender.onVideoCompleted();
             }
         });
         // 设置 Dislike 弹窗
