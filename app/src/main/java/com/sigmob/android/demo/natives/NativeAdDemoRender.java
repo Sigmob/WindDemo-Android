@@ -157,7 +157,6 @@ public class NativeAdDemoRender {
             mvideoProgressContainer.setVisibility(View.GONE);
             native_3img_ad_container.setVisibility(View.GONE);
             mMediaViewLayout.setVisibility(View.GONE);
-            clickableViews.add(mImagePoster);
             imageViews.add(mImagePoster);
             adData.bindImageViews(imageViews, 0);
         } else if (patternType == NativeAdPatternType.NATIVE_VIDEO_AD) {
