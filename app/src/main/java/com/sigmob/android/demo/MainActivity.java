@@ -144,7 +144,7 @@ public class MainActivity extends Activity {
             }
 
             /**
-             * 当 isCanUsePhoneState=false 时，Sigmob 使用开发者传入的 IMEI 信息
+             * 当 isCanUsePhoneState=false 时，Sigmob 使用开发者传入的 IMEI 信息（请勿混用乱传设备 ID，可能影响收益或被核减）
              *
              * @return IMEI 或者 null
              */
