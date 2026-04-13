@@ -32,7 +32,7 @@ public class NativeAdDemoRender {
 
     private static final String TAG = "windSDK";
     /**
-     * 多布局根据adPatternType复用不同的根视图
+     * 多布局根据 adPatternType 复用不同的根视图
      */
     private final Map<Integer, View> developViewMap = new HashMap<>();
     private ImageView img_logo;
@@ -79,8 +79,6 @@ public class NativeAdDemoRender {
             ((ViewGroup) parent).removeView(nativeAdView);
         }
 
-        String title = adData.getTitle();
-        Log.d("windSDK", "getNativeAdView: title = " + title);
         img_logo = nativeAdView.findViewById(R.id.img_logo);
         ad_logo = nativeAdView.findViewById(R.id.channel_ad_logo);
         img_dislike = nativeAdView.findViewById(R.id.iv_dislike);
@@ -116,18 +114,12 @@ public class NativeAdDemoRender {
             Glide.with(context).load(iconUrl).into(img_logo);
         }
 
-        if (TextUtils.isEmpty(title)) {
-            text_title.setText("点开有惊喜");
-        } else {
-            text_title.setText(title);
-        }
+        String title = adData.getTitle();
+        Log.d("windSDK", "getNativeAdView: title = " + title);
+        text_title.setText(TextUtils.isEmpty(title) ? "点开有惊喜" : title);
 
         String desc = adData.getDesc();
-        if (TextUtils.isEmpty(desc)) {
-            text_desc.setText("听说点开它的人都交了好运");
-        } else {
-            text_desc.setText(desc);
-        }
+        text_desc.setText(TextUtils.isEmpty(desc) ? "听说点开它的人都交了好运" : desc);
 
         Bitmap adLogo = adData.getAdLogo();
         if (adLogo == null) {
@@ -209,7 +201,7 @@ public class NativeAdDemoRender {
             mVoiceButton.setOnClickListener(listener);
         }
 
-        /**
+        /*
          * 营销组件
          * 支持项目：智能电话（点击跳转拨号盘），外显表单
          * bindCTAViews 绑定营销组件监听视图，注意：bindCTAViews 的视图不可调用 setOnClickListener，否则 SDK 功能可能受到影响
