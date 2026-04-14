@@ -243,6 +243,16 @@ public class MainActivity extends Activity {
                 String result = (opArray == null || opArray.length == 0) ? null : opArray[1];
                 return result;
             }
+
+            /**
+             * 是否允许 SDK 获取磁盘空间大小，主要用于应用下载安装（4.25.14 版本新增）
+             *
+             * @return true 可以使用，false 禁止使用
+             */
+            @Override
+            public boolean isCanUseSpaceSize() {
+                return true;
+            }
         });
 
         // SDK 初始化
