@@ -26,6 +26,7 @@ import com.sigmob.windad.natives.WindNativeAdData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class NativeAdDemoRender {
@@ -245,7 +246,8 @@ public class NativeAdDemoRender {
                     int progress = (int) ((position * 100L) / duration);
                     mVideoProgressBar.setProgress(progress);
                     if (isNotNull(mVideoProgressText)) {
-                        mVideoProgressText.setText(progress + "%");
+                        String progressText = String.format(Locale.getDefault(), "%d/%d(%d%%)", position, duration, progress);
+                        mVideoProgressText.setText(progressText);
                     }
                     Log.d(TAG, "startProgressTimer: position = " + position + ", duration = " + duration + " progress = " + progress + "%");
                 }
@@ -271,11 +273,14 @@ public class NativeAdDemoRender {
      */
     public void onVideoCompleted() {
         stopProgressTimer();
+        int progress = 100;
         if (isNotNull(mVideoProgressBar)) {
-            mVideoProgressBar.setProgress(100);
+            mVideoProgressBar.setProgress(progress);
         }
-        if (isNotNull(mVideoProgressText)) {
-            mVideoProgressText.setText("100%");
+        if (isNotNull(mVideoProgressText) && isNotNull(mCurrentAdData)) {
+            int duration = mCurrentAdData.getVideoDuration();
+            String progressText = String.format(Locale.getDefault(), "%d/%d(%d%%)", duration, duration, progress);
+            mVideoProgressText.setText(progressText);
         }
     }
 
