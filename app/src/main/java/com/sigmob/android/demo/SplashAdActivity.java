@@ -153,6 +153,7 @@ public class SplashAdActivity extends Activity {
     }
 
     private void logCallBack(String call, String child) {
+        Log.d("windSDK", "logCallBack: call = " + call);
         for (int i = 0; i < callBackDataList.size(); i++) {
             CallBackItem callItem = callBackDataList.get(i);
             if (callItem.getText().equals(call)) {
