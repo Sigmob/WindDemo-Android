@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 可选，外部存储权限主要用于读写使用应用本身在外部存储的缓存目录，不会访问初应用缓存目录外的其它目录 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 可选，仅用于获取 IMEI 或者运营商信息 -->
+    <!-- 可选，仅用于获取运营商信息 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 可选，仅广告安装转化 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
@@ -81,7 +81,19 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
+            android:name=".AdEntryActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".DeviceActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PrivacySettingActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DeviceSettingActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout"
             android:screenOrientation="portrait" />
     </application>

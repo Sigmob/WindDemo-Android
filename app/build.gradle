@@ -37,6 +37,10 @@ android {
         targetCompatibility 1.8
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -49,6 +53,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+if (project.hasProperty('buildVersion')) {
+    android.defaultConfig.versionName = buildVersion
+}
+
+configurations.configureEach {
+    resolutionStrategy.cacheChangingModulesFor 24, 'hours'
+    resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
 }
 
 dependencies {

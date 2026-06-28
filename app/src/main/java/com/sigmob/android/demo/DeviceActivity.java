@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Process;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.TextView;
@@ -33,7 +32,6 @@ public class DeviceActivity extends Activity {
     private TextView tvInitStatus;
     private TextView tvAppId;
     private TextView tvManufacturer;
-    private TextView tvImei;
     private TextView tvOaid;
     private TextView tvAndroidId;
     private TextView tvNetworkType;
@@ -63,7 +61,6 @@ public class DeviceActivity extends Activity {
         tvPackageName = findViewById(R.id.tv_package_name);
         tvInitStatus = findViewById(R.id.tv_init_status);
         tvAppId = findViewById(R.id.tv_app_id);
-        tvImei = findViewById(R.id.tv_imei);
         tvOaid = findViewById(R.id.tv_oaid);
         tvAndroidId = findViewById(R.id.tv_android_id);
 
@@ -88,7 +85,6 @@ public class DeviceActivity extends Activity {
         tvInitStatus.setText(WindAds.sharedAds().isInit() ? "√" : "×");
         tvAppId.setText(Constants.app_id);
         getOAID();
-        tvImei.setText(getIMEI());
         tvAndroidId.setText(getAndroidId());
         copyText(tvOaid, tvAndroidId);
 
@@ -128,28 +124,6 @@ public class DeviceActivity extends Activity {
         } catch (Exception e) {
             Log.e(TAG, "getOAID: error = ", e);
         }
-    }
-
-    private String getIMEI() {
-        String defResult = "null";
-        if (checkPermission(Manifest.permission.READ_PHONE_STATE)) {
-            try {
-                TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-                if (tm == null) return defResult;
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return tm.getImei();
-                } else {
-                    return tm.getDeviceId();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            return "权限未授予";
-        }
-
-        return defResult;
     }
 
     public String getAndroidId() {

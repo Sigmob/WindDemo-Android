@@ -21,4 +21,20 @@ public class Constants {
     public static String newInterstitial_placement_id = "f51c93b6bf6";
 
     public static final String CONF_PLACEMENT_ID = "placementId";
+
+    // 隐私设置 SharedPreferences 名称
+    public static final String PRIVACY_PREFS = "privacy_prefs";
+    public static final String CONF_ADULT = "conf_adult";
+    public static final String CONF_PERSONALIZED = "conf_personalized";
+    public static final String CONF_PROGRAMMATIC = "conf_programmatic";
+    
+    // 设备信息控制 SharedPreferences 名称
+    public static final String DEVICE_PREFS = "device_prefs";
+    public static final String DEV_CAN_USE_LOCATION = "dev_can_use_location";
+    public static final String DEV_CAN_USE_PHONE_STATE = "dev_can_use_phone_state";
+    public static final String DEV_CAN_USE_OAID = "dev_can_use_oaid";
+    public static final String DEV_CAN_USE_ANDROID_ID = "dev_can_use_android_id";
+    public static final String DEV_CAN_USE_APP_LIST = "dev_can_use_app_list";
+    public static final String DEV_CAN_USE_SIM_OPERATOR = "dev_can_use_sim_operator";
+    public static final String DEV_CAN_USE_SPACE_SIZE = "dev_can_use_space_size";
 }

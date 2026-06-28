@@ -1,10 +1,10 @@
 package com.sigmob.android.demo;
 
-import android.app.Activity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,10 +12,8 @@ import android.os.Handler;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.Toast;
 
-import com.sigmob.android.demo.natives.NativeAdActivity;
 import com.sigmob.windad.OnInitializationListener;
 import com.sigmob.windad.OnStartListener;
 import com.sigmob.windad.WindAdOptions;
@@ -30,7 +28,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends androidx.appcompat.app.AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     boolean doubleBackToExitPressedOnce = false;
@@ -43,23 +41,29 @@ public class MainActivity extends Activity {
         setTitle("Sigmob SDK Version : " + WindAds.getVersion());
 
         findViewById(R.id.bt_sdk_init).setOnClickListener(view -> initSDK());
-        bindButton(R.id.bt_reward, RewardVideoActivity.class);
-        bindButton(R.id.bt_splash, SplashAdActivity.class);
-        bindButton(R.id.bt_native, NativeAdActivity.class);
-        bindButton(R.id.bt_new_interstitial, NewInterstitialActivity.class);
-        bindButton(R.id.bt_device, DeviceActivity.class);
+        findViewById(R.id.bt_privacy_setting).setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, PrivacySettingActivity.class)));
+        findViewById(R.id.bt_device_setting).setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, DeviceSettingActivity.class)));
+        findViewById(R.id.bt_start_sdk).setOnClickListener(v -> startSDK());
     }
 
-    private void bindButton(int id, Class<?> clz) {
-        View viewById = findViewById(id);
-        if (viewById == null) return;
+    private void startSDK() {
+        WindAds ads = WindAds.sharedAds();
+        if (!ads.isInit()) {
+            Toast.makeText(this, "请先进行 SDK 初始化", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ads.start(new OnStartListener() {
+            @Override
+            public void onStartSuccess() {
+                Toast.makeText(MainActivity.this, "SDK 启动成功", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, AdEntryActivity.class));
+            }
 
-        viewById.setOnClickListener(v -> {
-            if (WindAds.sharedAds().isInit()) {
-                Intent intent = new Intent(MainActivity.this, clz);
-                startActivity(intent);
-            } else {
-                Toast.makeText(MainActivity.this, "请先进行 SDK 初始化", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onStartFail(String error) {
+                Toast.makeText(MainActivity.this, "SDK 启动失败: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -93,17 +97,21 @@ public class MainActivity extends Activity {
          * 是否成年
          * true-成年；false-未成年；默认值为 true
          */
-        ads.setAdult(true);
+        SharedPreferences privacySp = getSharedPreferences(Constants.PRIVACY_PREFS, 0);
+        boolean isAdult = privacySp.getBoolean(Constants.CONF_ADULT, true);
+        boolean isPersonalizedOn = privacySp.getBoolean(Constants.CONF_PERSONALIZED, true);
+        boolean isProgrammaticOn = privacySp.getBoolean(Constants.CONF_PROGRAMMATIC, true);
+        ads.setAdult(isAdult);
         /*
          * 是否开启个性化推荐接口
          * true-开启；false-关闭；默认值为 true
          */
-        ads.setPersonalizedAdvertisingOn(true);
+        ads.setPersonalizedAdvertisingOn(isPersonalizedOn);
         /*
-         * 是否允许使用传感器
+         * 是否开启程序化推荐
          * true-开启；false-关闭；默认值为 true
          */
-        ads.setSensorStatus(true);
+        ads.setProgrammaticRecommend(isProgrammaticOn);
         // coppa，是否年龄限制
         ads.setIsAgeRestrictedUser(WindAgeRestrictedUserStatus.NO);
         // 是否接受 gdpr 协议
@@ -111,6 +119,14 @@ public class MainActivity extends Activity {
 
         String[] opArray = getNetworkOperator();
         WindAdOptions windAdOptions = new WindAdOptions(Constants.app_id, Constants.app_key);
+        // 从 SharedPreferences 读取设备信息权限设置
+        SharedPreferences deviceSp = getSharedPreferences(Constants.DEVICE_PREFS, 0);
+        final boolean canUseLocation = deviceSp.getBoolean(Constants.DEV_CAN_USE_LOCATION, true);
+        final boolean canUseOaid = deviceSp.getBoolean(Constants.DEV_CAN_USE_OAID, true);
+        final boolean canUseAndroidId = deviceSp.getBoolean(Constants.DEV_CAN_USE_ANDROID_ID, true);
+        final boolean canUseAppList = deviceSp.getBoolean(Constants.DEV_CAN_USE_APP_LIST, true);
+        final boolean canUseSimOperator = deviceSp.getBoolean(Constants.DEV_CAN_USE_SIM_OPERATOR, true);
+        final boolean canUseSpaceSize = deviceSp.getBoolean(Constants.DEV_CAN_USE_SPACE_SIZE, true);
         // 设置自定义设备信息，允许开发者自行传入设备及用户信息
         windAdOptions.setCustomController(new WindCustomController() {
             /**
@@ -120,7 +136,7 @@ public class MainActivity extends Activity {
              */
             @Override
             public boolean isCanUseLocation() {
-                return false;
+                return canUseLocation;
             }
 
             /**
@@ -134,33 +150,13 @@ public class MainActivity extends Activity {
             }
 
             /**
-             * 是否允许 SDK 主动获取 IMEI
-             *
-             * @return true 可以使用，false 禁止使用。默认为 true
-             */
-            @Override
-            public boolean isCanUsePhoneState() {
-                return false;
-            }
-
-            /**
-             * 当 isCanUsePhoneState=false 时，Sigmob 使用开发者传入的 IMEI 信息（请勿混用乱传设备 ID，可能影响收益或被核减）
-             *
-             * @return IMEI 或者 null
-             */
-            @Override
-            public String getDevImei() {
-                return null;
-            }
-
-            /**
              * 是否允许 SDK 主动获取 OAID
              *
              * @return true 可以使用，false 禁止使用。默认为 true
              */
             @Override
             public boolean isCanUseOaid() {
-                return true;
+                return canUseOaid;
             }
 
             /**
@@ -180,7 +176,7 @@ public class MainActivity extends Activity {
              */
             @Override
             public boolean isCanUseAndroidId() {
-                return false;
+                return canUseAndroidId;
             }
 
             /**
@@ -200,7 +196,7 @@ public class MainActivity extends Activity {
              */
             @Override
             public boolean isCanUseAppList() {
-                return false;
+                return canUseAppList;
             }
 
             /**
@@ -223,7 +219,7 @@ public class MainActivity extends Activity {
              */
             @Override
             public boolean isCanUseSimOperator() {
-                return false;
+                return canUseSimOperator;
             }
 
             /**
@@ -251,7 +247,7 @@ public class MainActivity extends Activity {
              */
             @Override
             public boolean isCanUseSpaceSize() {
-                return true;
+                return canUseSpaceSize;
             }
         });
 
@@ -260,31 +256,15 @@ public class MainActivity extends Activity {
             @Override
             public void onInitializationSuccess() {
                 Log.i(TAG, "initSDK#onInitializationSuccess");
+                Toast.makeText(MainActivity.this, "SDK 初始化成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onInitializationFail(String error) {
                 Log.e(TAG, "initSDK#onInitializationFail: error =" + error);
+                Toast.makeText(MainActivity.this, "SDK 初始化失败: " + error, Toast.LENGTH_SHORT).show();
             }
         });
-
-        // SDK 启动
-        ads.start(new OnStartListener() {
-            @Override
-            public void onStartSuccess() {
-                Log.i(TAG, "initSDK#OnStartSuccess");
-            }
-
-            @Override
-            public void onStartFail(String error) {
-                Log.e(TAG, "initSDK#OnStartSuccess: error =" + error);
-            }
-        });
-    }
-
-    public List<PackageInfo> getInstallPackageInfoList(Context ctx) {
-        PackageManager pm = ctx.getPackageManager();
-        return pm.getInstalledPackages(0);
     }
 
     public String[] getNetworkOperator() {
