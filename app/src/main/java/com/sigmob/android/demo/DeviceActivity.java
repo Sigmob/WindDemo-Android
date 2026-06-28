@@ -36,7 +36,6 @@ public class DeviceActivity extends Activity {
     private TextView tvAndroidId;
     private TextView tvNetworkType;
     private TextView tvNetworkState;
-    private TextView tvWifiState;
     private TextView tvGpsLocation;
     private TextView tvNetworkLocation;
     private TextView tvReadPhoneState;
@@ -69,7 +68,6 @@ public class DeviceActivity extends Activity {
 
         // 权限状态
         tvNetworkState = findViewById(R.id.tv_network_state);
-        tvWifiState = findViewById(R.id.tv_wifi_state);
         tvGpsLocation = findViewById(R.id.tv_gps_location);
         tvNetworkLocation = findViewById(R.id.tv_network_location);
         tvReadPhoneState = findViewById(R.id.tv_read_phone_state);
@@ -93,7 +91,6 @@ public class DeviceActivity extends Activity {
 
         // 权限状态
         tvNetworkState.setText(checkPermission(Manifest.permission.ACCESS_NETWORK_STATE) ? "√" : "×");
-        tvWifiState.setText(checkPermission(Manifest.permission.ACCESS_WIFI_STATE) ? "√" : "×");
         tvGpsLocation.setText(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) ? "√" : "×");
         tvNetworkLocation.setText(checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ? "√" : "×");
         tvReadPhoneState.setText(checkPermission(Manifest.permission.READ_PHONE_STATE) ? "√" : "×");
