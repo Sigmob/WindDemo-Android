@@ -8,8 +8,6 @@
 
     <!-- 可选，仅获取当前网络类型及状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 可选，外部存储权限主要用于读写使用应用本身在外部存储的缓存目录，不会访问初应用缓存目录外的其它目录 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 可选，仅用于获取运营商信息 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 可选，仅广告安装转化 -->
