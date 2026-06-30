@@ -61,6 +61,22 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/bt_privacy_view"
+            android:layout_width="240dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="个人信息查询及删除" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
             android:id="@+id/bt_start_sdk"
             android:layout_width="240dp"
             android:layout_height="60dp"

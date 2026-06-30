@@ -45,6 +45,8 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, PrivacySettingActivity.class)));
         findViewById(R.id.bt_device_setting).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, DeviceSettingActivity.class)));
+        findViewById(R.id.bt_privacy_view).setOnClickListener(v ->
+                WindAds.sharedAds().openPrivacyView(MainActivity.this));
         findViewById(R.id.bt_start_sdk).setOnClickListener(v -> startSDK());
     }
 
