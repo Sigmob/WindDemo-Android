@@ -13,8 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class PrivacyPolicyDialog extends Dialog {
-    private static final String PRIVACY_URL = "https://doc.sigmob.com/Sigmob%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E5%90%88%E8%A7%84%E6%9D%A1%E6%AC%BE/%E9%9A%90%E7%A7%81%E6%94%BF%E7%AD%96/";
-    private static final String PRIVACY_SDK_HEGUI_URL = "https://doc.sigmob.com/Sigmob%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E5%90%88%E8%A7%84%E6%9D%A1%E6%AC%BE/Sigmob_SDK_%E5%90%88%E8%A7%84%E6%8C%87%E5%BC%95/";
+    private static final String PRIVACY_URL = "https://doc.sigmob.com/sigmob/140/";
+    private static final String PRIVACY_SDK_HEGUI_URL = "https://doc.sigmob.com/sigmob/143/";
     private OnPrivacyResultListener listener;
 
     public interface OnPrivacyResultListener {
