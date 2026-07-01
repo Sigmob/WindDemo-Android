@@ -1,9 +1,14 @@
 package com.sigmob.android.demo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageInfo;
 import android.content.res.AssetManager;
 import android.location.Location;
@@ -31,6 +36,8 @@ import java.util.List;
 public class MainActivity extends androidx.appcompat.app.AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_CODE_PHONE_STATE = 1001;
+    private static final int REQUEST_CODE_LOCATION = 1002;
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -48,6 +55,50 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity {
         findViewById(R.id.bt_privacy_view).setOnClickListener(v ->
                 WindAds.sharedAds().openPrivacyView(MainActivity.this));
         findViewById(R.id.bt_start_sdk).setOnClickListener(v -> startSDK());
+        findViewById(R.id.bt_request_phone_state).setOnClickListener(v -> requestPhoneStatePermission());
+        findViewById(R.id.bt_request_location).setOnClickListener(v -> requestLocationPermission());
+    }
+
+    private void requestPhoneStatePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "已获取手机状态权限", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_PHONE_STATE},
+                REQUEST_CODE_PHONE_STATE);
+    }
+
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "已获取位置权限", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                REQUEST_CODE_LOCATION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length == 0) return;
+        boolean granted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+        switch (requestCode) {
+            case REQUEST_CODE_PHONE_STATE:
+                Toast.makeText(this, granted ? "手机状态权限已授权" : "手机状态权限被拒绝",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case REQUEST_CODE_LOCATION:
+                Toast.makeText(this, granted ? "位置权限已授权" : "位置权限被拒绝",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 
     private void startSDK() {

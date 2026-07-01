@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 可选，仅用于获取运营商信息 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 可选，仅用于获取位置信息 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <!-- 可选，仅广告安装转化 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
