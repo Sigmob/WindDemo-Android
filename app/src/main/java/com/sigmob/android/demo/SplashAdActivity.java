@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
@@ -164,9 +163,9 @@ public class SplashAdActivity extends Activity {
                 break;
             }
         }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        if (adapter == null) return;
+
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -158,9 +158,9 @@ public class NewInterstitialActivity extends Activity implements WindNewIntersti
                 break;
             }
         }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        if (adapter == null) return;
+
+        adapter.notifyDataSetChanged();
     }
 
     @Override

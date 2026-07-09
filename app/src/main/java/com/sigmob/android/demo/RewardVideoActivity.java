@@ -169,9 +169,9 @@ public class RewardVideoActivity extends Activity {
                 break;
             }
         }
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        if (adapter == null) return;
+
+        adapter.notifyDataSetChanged();
     }
 
     @Override

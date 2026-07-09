@@ -3,7 +3,6 @@ package com.sigmob.android.demo;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -37,12 +36,7 @@ public class PrivacySettingActivity extends Activity {
         cbProgrammatic = findViewById(R.id.cb_programmatic);
         btnSave = findViewById(R.id.btn_save);
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSettings();
-            }
-        });
+        btnSave.setOnClickListener(v -> saveSettings());
     }
 
     private void loadSettings() {
