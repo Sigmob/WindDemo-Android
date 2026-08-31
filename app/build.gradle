@@ -83,4 +83,7 @@ dependencies {
     // 其中 latest.release 指代最新 Bugly SDK 版本号，也可以指定明确的版本号，例如 2.2.0
     implementation 'com.tencent.bugly:crashreport:latest.release'
     implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    // 微信官方依赖库，包含微信支付：https://developers.weixin.qq.com/doc/oplatform/Downloads/Android_Resource.html
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.40'
 }

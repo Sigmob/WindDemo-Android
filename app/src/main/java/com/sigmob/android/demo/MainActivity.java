@@ -101,15 +101,18 @@ public class MainActivity extends androidx.appcompat.app.AppCompatActivity {
 
     private void startSDK() {
         WindAds ads = WindAds.sharedAds();
-        if (!ads.isInit()) {
+        boolean init = ads.isInit();
+        if (init) {
+            startActivity(new Intent(MainActivity.this, AdEntryActivity.class));
+        } else {
             Toast.makeText(this, "请先进行 SDK 初始化", Toast.LENGTH_SHORT).show();
             return;
         }
+
         ads.start(new OnStartListener() {
             @Override
             public void onStartSuccess() {
                 Toast.makeText(MainActivity.this, "SDK 启动成功", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(MainActivity.this, AdEntryActivity.class));
             }
 
             @Override
